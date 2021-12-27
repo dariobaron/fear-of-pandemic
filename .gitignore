@@ -1,0 +1,5 @@
+# temporary object files
+*.o
+
+# final executables
+*.x
