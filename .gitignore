@@ -3,3 +3,6 @@
 
 # final executables
 *.x
+
+# input network structures
+*.adjlist
