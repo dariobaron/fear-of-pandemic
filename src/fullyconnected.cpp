@@ -4,7 +4,7 @@
  * The produced network is saved into the input folder to
  * be used by the main program.
  * 
- * **********/
+**********/
 
 #include <iostream>
 #include <fstream>
