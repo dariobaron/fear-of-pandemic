@@ -1,25 +1,28 @@
-# list of all the objects files
-OBJECTS = $(wildcard *.o)
+# list of all headers
+HEADERS := $(wildcard *.hpp)
+# list of all the source files
+SOURCES := $(wildcard *.cpp)
+# list of all object files by sostitution of all the *.cpp with *.o
+OBJECTS := $(patsubst %.cpp,%.o,$(SOURCES))
 # list of all the executable files
-EXECUTABLES = fullyconnected.x simulation.x
+EXECUTABLES := create_network.x simulation.x
 
 # compiler directives
-WARNING = -Wall -Wpedantic -Wextra -Wno-sign-compare
-CXX = g++
-CPPFLAGS = -O3 $(WARNING)
+WARNING := -Wall -Wpedantic -Wextra -Wno-sign-compare
+CXX := g++
+CXXFLAGS := -O3
+
+
+.PHONY: all clean
 
 
 all: $(EXECUTABLES)
 
-fullyconnected.x: fullyconnected.o
+%.x: %.o
 	$(CXX) $^ -o $@
 
-simulation.x: simulation.o
-	$(CXX) $^ -o $@
+%.o: %.cpp Makefile $(HEADERS)
+	$(CXX) $(WARNING) $(CXXFLAGS) -c $< -o $@
 
-%.o: %.c
-	$(CXX) -c $(CPPFLAGS)
-
-.PHONY: clean
 clean:
 	rm -f $(OBJECTS) $(EXECUTABLES)

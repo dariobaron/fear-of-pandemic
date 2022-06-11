@@ -2,6 +2,7 @@
 #define node_h
 
 #include <map>
+#include <utility>
 using namespace std;
 
 class Node{
@@ -20,18 +21,18 @@ public:
 
 	~Node(){};
 
-	int id(){	return id_;	};
+	int id() const{	return id_;	};
 
-	short int status(){	return status_;	};
+	short int status() const{	return status_;	};
 	void status(short int s){	status_ = s;	};
 
-	int degree(){	return degree_;	}
+	int degree() const{	return degree_;	}
 
-	double fitness(){	return fitness_;	};
+	double fitness() const{	return fitness_;	};
 	void fitness(double f){	fitness_ = f;	};
 	
 	void addConnection(int target, double weight=1){
-		connections_.insert(target, weight);
+		connections_.insert(pair<int,double>(target, weight));
 		++degree_;
 	};
 	void changeConnection(int target, double weight){	connections_[target] = weight;	};
@@ -40,10 +41,12 @@ public:
 		--degree_;
 	};
 
-	double fear(){	return fear;	};
+	double fear() const{	return fear_;	};
 	void fear(double f){	fear_ = f;	};
 
 	void updateStatus(){	status_ = new_status_; };
+
+	map<int,double> connections() const{	return connections_;	};
 	
 };
 
