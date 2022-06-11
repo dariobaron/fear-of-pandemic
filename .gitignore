@@ -5,4 +5,4 @@
 *.x
 
 # input network structures
-*.adjlist
+#*.adjlist
