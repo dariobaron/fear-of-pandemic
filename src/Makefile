@@ -5,7 +5,7 @@ SOURCES := $(wildcard *.cpp)
 # list of all object files by sostitution of all the *.cpp with *.o
 OBJECTS := $(patsubst %.cpp,%.o,$(SOURCES))
 # list of all the executable files
-EXECUTABLES := create_network.x simulation.x
+EXECUTABLES := create_network.x simulation.x prova.x
 
 # compiler directives
 WARNING := -Wall -Wpedantic -Wextra -Wno-sign-compare

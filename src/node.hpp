@@ -3,6 +3,8 @@
 
 #include <map>
 #include <utility>
+#include "global.hpp"
+
 using namespace std;
 
 class Node{
@@ -17,14 +19,15 @@ protected:
 	short int new_status_;
 
 public:
-	Node(int id) : id_(id), degree_(0) {};
+	Node(int id) : id_(id), status_(), degree_(0),
+	fitness_(), connections_(), fear_(), new_status_() {};
 
 	~Node(){};
 
 	int id() const{	return id_;	};
 
 	short int status() const{	return status_;	};
-	void status(short int s){	status_ = s;	};
+	void status(short int s){	new_status_ = s;	};
 
 	int degree() const{	return degree_;	}
 
@@ -36,6 +39,11 @@ public:
 		++degree_;
 	};
 	void changeConnection(int target, double weight){	connections_[target] = weight;	};
+	void changeAllConnection(double weight){
+		for (auto & p : connections_){
+			p.second = weight;
+		}
+	};
 	void removeConnection(int target){
 		connections_.erase(target);
 		--degree_;

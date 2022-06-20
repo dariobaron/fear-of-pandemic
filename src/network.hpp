@@ -11,6 +11,7 @@
 #include <numeric>
 #include "global.hpp"
 #include "node.hpp"
+#include "random.hpp"
 
 using namespace std;
 
@@ -36,32 +37,31 @@ public:
 // N.B. BE AWARE OF BIG FILES: they are fully loaded, and they must fit in RAM
 				vector<string> lines;					// file content
 				string line;							// temporary string to use getline
-				getline(input, line);
+				int source;								// temporary string to use getline
 				while (!input.eof()){
-					lines.push_back(line);
-					stringstream ss(line);				// reading each line content as stringstream
+					getline(input, line);				// reading a line
+					stringstream ss(line);				// using stringstream to read the values
 // storing the first integer as node ID and creating the node
-					int source;
-					ss >> source;
-					++N_nodes_;
-					nodes_.push_back(new Node(source));
-					ID_to_idx_[source] = N_nodes_ - 1;
-					getline(input, line);
+					if (ss >> source){					// check for the good input
+						lines.push_back(line);			// storing the lines in RAM
+						ID_to_idx_[source] = N_nodes_;	// N_nodes_ is not yet updated, so it is the index to the correct position
+						++N_nodes_;						// N_nodes_ update
+						nodes_.push_back(new Node(source));
+					}
 				}
 // creating the edges
 				for (auto & line : lines){
-					stringstream ss(line);				// reading each line content as stringstream
+					stringstream ss(line);				// using stringstream to read the values
 					int source, target;
 					ss >> source;
-					while (!ss.eof()){
-						ss >> target;
-						nodes_[ID_to_idx_[source]]->addConnection(ID_to_idx_[target]);
-						nodes_[ID_to_idx_[target]]->addConnection(ID_to_idx_[source]);
+					while (ss >> target || !ss.eof()){
+						nodes_[ID_to_idx_[source]]->addConnection(target);
+						nodes_[ID_to_idx_[target]]->addConnection(source);
 					}
 				}
 			}
-			else if (format == "edgelist"){
 // to be implemented
+			else if (format == "edgelist"){
 			}
 			input.close();
 		}
@@ -84,40 +84,46 @@ public:
 
 	template<typename Distribution>
 	void initEdgesBianconiBarabasi(Distribution & fitness_distr, int edges_per_node){
-		vector<int> degree(N_nodes_, 0);
+// utility vectors for the probability of new link
+		vector<int> degree(N_nodes_, edges_per_node);
 		vector<double> fitness(N_nodes_);
-		for (auto & f : fitness){
-			f = fitness_distr(random_engine);
+		for (auto i = 0; i < N_nodes_; ++i){
+			fitness[i] = fitness_distr(random_engine);
+			nodes_[i]->fitness(fitness[i]);
 		}
-
 // building the initial fully-connected core
 		for (auto i = 0; i < edges_per_node + 1; ++i){
 			for (auto j = i + 1; j < edges_per_node + 1; ++j){
-				nodes_[i]->addConnection(ID_to_idx_[j]);
-				nodes_[j]->addConnection(ID_to_idx_[i]);
+				nodes_[i]->addConnection(nodes_[j]->id());
+				nodes_[j]->addConnection(nodes_[i]->id());
 			}
-			degree[i] = edges_per_node - 1;
 		}
-
+		vector<double> probability(N_nodes_, 0);
+		transform(degree.begin(), degree.begin()+edges_per_node+1, fitness.begin(), probability.begin(), multiplies<double>());
 // building the rest of the network, node by node
 		for (auto i = edges_per_node + 1; i < N_nodes_; ++i){
-			vector<double> probability(i);
-			transform(degree.begin(), degree.begin()+i, fitness.begin(), probability.begin(), multiplies<double>());
-			discrete_distribution<int> distr(probability.begin(), probability.end());
-			for (auto j = 0; j < edges_per_node; ++j){
-				auto target_idx = distr(random_engine);
-				cout << i << " " << target_idx << endl;
-				++degree[target_idx];
-				nodes_[i]->addConnection(ID_to_idx_[target_idx]);
-				nodes_[target_idx]->addConnection(ID_to_idx_[i]);
-				probability[target_idx] = 0;
-				distr = discrete_distribution<int>(probability.begin(), probability.end());
+			vector<Node*> elected = randomChoice(vector<Node*>(nodes_.begin(), nodes_.begin()+i), edges_per_node, probability);
+			for (auto n : elected){
+				int n_id = ID_to_idx_[n->id()];
+				++degree[n_id];
+				probability[n_id] += fitness[n_id];
+				n->addConnection(nodes_[i]->id());
+				nodes_[i]->addConnection(n->id());
 			}
+			degree[i] += edges_per_node;
+			probability[i] += edges_per_node * fitness[i];
+			cout << "Processing... " << 100*i/N_nodes_ << "%\r" << flush;
 		}
-
-	};
+	}
 	
 	vector<Node*> getNodes() const{ return nodes_; };
+
+	bool checkIdIntegrity() const{
+		for (auto & p : ID_to_idx_){
+			if (p.first != p.second){	return false;	}
+		}
+		return true;
+	};
 
 	void writeAdjlist(const string outputfile) const{
 		ofstream output(outputfile);
