@@ -6,4 +6,6 @@ using namespace std;
 
 extern mt19937_64 random_engine;
 
+extern uniform_real_distribution<> uniform_distribution;
+
 #endif

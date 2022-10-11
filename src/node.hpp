@@ -14,7 +14,7 @@ protected:
 	short int status_;
 	int degree_;
 	double fitness_;
-	map<int,double> connections_;
+	map<Node*,double> connections_;
 	double fear_;
 	short int new_status_;
 
@@ -34,17 +34,17 @@ public:
 	double fitness() const{	return fitness_;	};
 	void fitness(double f){	fitness_ = f;	};
 	
-	void addConnection(int target, double weight=1){
-		connections_.insert(pair<int,double>(target, weight));
+	void addConnection(Node* target, double weight=1){
+		connections_.insert(pair<Node*,double>(target, weight));
 		++degree_;
 	};
-	void changeConnection(int target, double weight){	connections_[target] = weight;	};
+	void changeConnection(Node* target, double weight){	connections_[target] = weight;	};
 	void changeAllConnection(double weight){
 		for (auto & p : connections_){
 			p.second = weight;
 		}
 	};
-	void removeConnection(int target){
+	void removeConnection(Node* target){
 		connections_.erase(target);
 		--degree_;
 	};
@@ -54,7 +54,17 @@ public:
 
 	void updateStatus(){	status_ = new_status_; };
 
-	map<int,double> connections() const{	return connections_;	};
+	map<Node*,double> connections() const{	return connections_;	};
+
+	bool incubate(){
+
+	}
+	bool recover(){
+		
+	}
+	vector<Node*> infect() const{
+		
+	}
 	
 };
 

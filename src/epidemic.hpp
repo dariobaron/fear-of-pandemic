@@ -21,8 +21,8 @@ protected:
 
 private:
 	Discretizer time_gen_;
-	set<int> exposeds;
-	set<int> infecteds;
+	set<Node*> exposeds;
+	set<Node*> infecteds;
 
 public:
 	Epidemic(vector<Node*> v, Discretizer & time_gen) : nodes_(v),
@@ -44,7 +44,7 @@ public:
 		for (auto & n : initial_infecteds){
 			n->status(2);
 			n->updateStatus();
-			infecteds.insert(n->id());
+			infecteds.insert(n);
 		}
 // updating the metrics vectors
 		S_.push_back(nodes_.size() - N_initial_infectiouses);
@@ -54,17 +54,44 @@ public:
 		D_.push_back(0);
 	}
 
-	void updateMetrics(int S, int E, int I, int R, int D){
-		S_.push_back(S);
-		E_.push_back(E);
-		I_.push_back(I);
-		R_.push_back(R);
-		D_.push_back(D);
+	void updateMetrics(const vector<int> & metrics_at_step){
+		S_.push_back(metrics_at_step[0]);
+		E_.push_back(metrics_at_step[1]);
+		I_.push_back(metrics_at_step[2]);
+		R_.push_back(metrics_at_step[3]);
+		D_.push_back(metrics_at_step[4]);
 	};
 
 	void evolveStep(){
+// getting new timestamp
 		t_.push_back(time_gen_());
 
+// loop over the infecteds
+		for (auto node : infecteds){
+			node->infect();
+			if (node->recover()){
+				infecteds.erase(node);
+			}
+		}
+
+// loop over the exposed
+		for (auto node : exposeds){
+			if (node->incubate()){
+				exposeds.erase(node);
+				infecteds.insert(node);
+			}
+		}
+
+// collecting new statuses
+		vector<int> SEIRD(5, 0);
+		for (auto node : nodes_){
+			node->updateStatus();
+			SEIRD[node->status()]++;
+			if (node->status() == 1){
+				exposeds.insert(node);
+			}
+		}
+		updateMetrics(SEIRD);
 	}
 
 };

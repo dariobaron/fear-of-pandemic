@@ -55,8 +55,8 @@ public:
 					int source, target;
 					ss >> source;
 					while (ss >> target || !ss.eof()){
-						nodes_[ID_to_idx_[source]]->addConnection(target);
-						nodes_[ID_to_idx_[target]]->addConnection(source);
+						nodes_[ID_to_idx_[source]]->addConnection(nodes_[ID_to_idx_[target]]);
+						nodes_[ID_to_idx_[target]]->addConnection(nodes_[ID_to_idx_[source]]);
 					}
 				}
 			}
@@ -94,8 +94,8 @@ public:
 // building the initial fully-connected core
 		for (auto i = 0; i < edges_per_node + 1; ++i){
 			for (auto j = i + 1; j < edges_per_node + 1; ++j){
-				nodes_[i]->addConnection(nodes_[j]->id());
-				nodes_[j]->addConnection(nodes_[i]->id());
+				nodes_[i]->addConnection(nodes_[j]);
+				nodes_[j]->addConnection(nodes_[i]);
 			}
 		}
 		vector<double> probability(N_nodes_, 0);
@@ -107,8 +107,8 @@ public:
 				int n_id = ID_to_idx_[n->id()];
 				++degree[n_id];
 				probability[n_id] += fitness[n_id];
-				n->addConnection(nodes_[i]->id());
-				nodes_[i]->addConnection(n->id());
+				n->addConnection(nodes_[i]);
+				nodes_[i]->addConnection(n);
 			}
 			degree[i] += edges_per_node;
 			probability[i] += edges_per_node * fitness[i];
@@ -135,8 +135,8 @@ public:
 				output << "\n" << node->id();
 				auto connections = node->connections();
 				for (auto & p : connections){
-					if (p.first > node->id()){
-						output << " " << p.first;
+					if (p.first->id() > node->id()){
+						output << " " << p.first->id();
 					}
 				}
 			}

@@ -16,6 +16,7 @@
 using namespace std;
 
 mt19937_64 random_engine(12031997);
+uniform_real_distribution<> uniform_distribution(0., 1.);
 
 ofstream output;
 
@@ -26,7 +27,7 @@ for (auto i = 0; i < 10000; ++i){
 }
 
 if (argc != 3){
-	cerr << "USAGE: './simulation.x NUMBER_OF_NODES EDGES_PER_NODE'" << endl << "Terminating\t..." << endl;
+	cerr << "USAGE: './create_network.x NUMBER_OF_NODES EDGES_PER_NODE'" << endl << "Terminating\t..." << endl;
 	return -1;
 }
 

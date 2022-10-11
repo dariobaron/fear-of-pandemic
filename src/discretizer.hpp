@@ -9,7 +9,7 @@ protected:
 	double t_;
 
 public:
-	Discretizer() : timestep_(0), beginning_(0), t_(0) {};
+	Discretizer() : timestep_(1), beginning_(0), t_(0) {};
 	Discretizer(double dt, double beg=0) : timestep_(dt), beginning_(beg), t_(beg) {};
 	
 	~Discretizer() {};

@@ -10,6 +10,7 @@
 using namespace std;
 
 mt19937_64 random_engine(12031997);
+uniform_real_distribution<> uniform_distribution(0., 1.);
 
 int main(int argc, char const *argv[]){
 
