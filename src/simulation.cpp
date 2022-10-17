@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <random>
 #include "global.hpp"
@@ -6,11 +7,15 @@
 #include "node.hpp"
 #include "epidemic.hpp"
 #include "discretizer.hpp"
+#include "distribution.hpp"
 
 using namespace std;
 
-mt19937_64 random_engine(12031997);
-uniform_real_distribution<> uniform_distribution(0., 1.);
+mt19937_64 random_engine(1297);
+Distribution<uniform_real_distribution<>,mt19937_64> uniform_distribution(uniform_real_distribution<>(0., 1.), &random_engine);
+
+ofstream output;
+ofstream logstream("log.txt");
 
 int main(int argc, char const *argv[]){
 
@@ -27,22 +32,37 @@ string input_filename(argv[1]);
 
 cout << "Processing network in '" + input_filename + "'..." << endl;
 
-Network network(input_filename);
 
-if (!network.checkIdIntegrity()){
-	cout << "ERROR : the node ID does not correspond to the index in the array" << endl;
-	return -1;
+double delta_time(3./24);									// 3hrs [days]
+double start_time(0);
+double mu = 1. / 2 * delta_time;							// 0.5 infectivity/day
+double beta = 1. / 2 * delta_time / network.getMeanDegree();// 0.5 exposures/day
+double gamma = 1. / 6 * delta_time;							// 0.16 recovers/day
+double f_D = 0.01;											// death probability
+
+
+Network network(input_filename);
+Discretizer time_generator(delta_time, start_time);
+Epidemic epidemic(network.getNodes(), time_generator, mu, beta, gamma, f_D);
+epidemic.seedEpidemic(2);
+
+output.open("../output/prova.txt");
+
+epidemic.evolve();
+
+auto t = epidemic.gett();
+auto S = epidemic.getS();
+auto E = epidemic.getE();
+auto I = epidemic.getI();
+auto R = epidemic.getR();
+auto D = epidemic.getD();
+for (auto i = 0; i < t.size(); ++i){
+	output << t[i] << " " << S[i] << " " << E[i] << " " << I[i];
+	output << " " << R[i] << " " << D[i] << endl;
 }
 
-
-double delta_time(3./24);								// 3hrs [days]
-double start_time(0);
-Discretizer time_generator(delta_time, start_time);
-
-Epidemic epidemic(network.getNodes(), time_generator);
-epidemic.seedEpidemic(10);
-
-auto nodes = network.getNodes();
+output.close();
+output.clear();
 
 return 0;
 }

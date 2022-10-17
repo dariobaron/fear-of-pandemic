@@ -18,6 +18,10 @@ public:
 		t_ += timestep_;
 		return t_;
 	}
+
+	double get() const{
+		return t_;
+	}
 };
 
 #endif

@@ -118,6 +118,14 @@ public:
 	
 	vector<Node*> getNodes() const{ return nodes_; };
 
+	double getMeanDegree() const{
+		int total_degree = 0;
+		for (auto node : nodes_){
+			total_degree += node->degree();
+		}
+		return total_degree / 2. / N_nodes_;
+	};
+
 	bool checkIdIntegrity() const{
 		for (auto & p : ID_to_idx_){
 			if (p.first != p.second){	return false;	}

@@ -12,11 +12,12 @@
 #include <sstream>
 #include "global.hpp"
 #include "network.hpp"
+#include "distribution.hpp"
 
 using namespace std;
 
 mt19937_64 random_engine(12031997);
-uniform_real_distribution<> uniform_distribution(0., 1.);
+Distribution<uniform_real_distribution<>,mt19937_64> uniform_distribution(uniform_real_distribution<>(0., 1.), &random_engine);
 
 ofstream output;
 

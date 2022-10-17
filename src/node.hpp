@@ -56,14 +56,48 @@ public:
 
 	map<Node*,double> connections() const{	return connections_;	};
 
-	bool incubate(){
-
+	bool incubate(double latency_rate){
+		if (status_ != 1){
+			cerr << "Error: node " << this << "(" << id_ << ")" << " incubated while not exposed. Current status is " << status_ << endl;
+		}
+		bool incubated = uniform_distribution() <= latency_rate;
+		if (incubated){
+			new_status_ = 2;
+			cout << id_ << " has incubated" << endl;
+		}
+		return incubated;
 	}
-	bool recover(){
-		
+	bool recover(double recovery_rate, double fatality_probability){
+		if (status_ != 2){
+			cerr << "Error: node " << this << "(" << id_ << ")" << " recovered while not infected. Current status is " << status_ << endl;
+		}
+		bool recovered = uniform_distribution() <= recovery_rate;
+		if (recovered){
+			if (uniform_distribution() <= fatality_probability){
+				new_status_ = 4;
+				cout << id_ << " has dead" << endl;
+			}
+			else{
+				new_status_ = 3;
+				cout << id_ << " has recovered" << endl;
+			}
+		}
+		return recovered;
 	}
-	vector<Node*> infect() const{
-		
+	void infect(double transmission_rate) const{
+		if (status_ != 2){
+			cerr << "Error: node " << this << "(" << id_ << ")" << " infecting while not infected. Current status is " << status_ << endl;
+		}
+		cout << id_ << " infecting : ";
+		for (auto p : connections_){
+			if (p.first->status() == 0){
+				if (uniform_distribution() <= p.second*transmission_rate*(1-fear_)){
+					cout << p.first->id() << " ";
+					p.first->status(1);
+				}
+			}
+		}
+		cout << endl;
 	}
 	
 };
