@@ -63,7 +63,7 @@ public:
 		bool incubated = uniform_distribution() <= latency_rate;
 		if (incubated){
 			new_status_ = 2;
-			cout << id_ << " has incubated" << endl;
+			logstream << id_ << " has incubated" << endl;
 		}
 		return incubated;
 	}
@@ -75,11 +75,11 @@ public:
 		if (recovered){
 			if (uniform_distribution() <= fatality_probability){
 				new_status_ = 4;
-				cout << id_ << " has dead" << endl;
+				logstream << id_ << " has dead" << endl;
 			}
 			else{
 				new_status_ = 3;
-				cout << id_ << " has recovered" << endl;
+				logstream << id_ << " has recovered" << endl;
 			}
 		}
 		return recovered;
@@ -88,16 +88,16 @@ public:
 		if (status_ != 2){
 			cerr << "Error: node " << this << "(" << id_ << ")" << " infecting while not infected. Current status is " << status_ << endl;
 		}
-		cout << id_ << " infecting : ";
+		logstream << id_ << " infecting : ";
 		for (auto p : connections_){
 			if (p.first->status() == 0){
 				if (uniform_distribution() <= p.second*transmission_rate*(1-fear_)){
-					cout << p.first->id() << " ";
+					logstream << p.first->id() << " ";
 					p.first->status(1);
 				}
 			}
 		}
-		cout << endl;
+		logstream << endl;
 	}
 	
 };

@@ -12,11 +12,11 @@ class Epidemic{
 
 protected:
 	vector<Node*> nodes_;
-	vector<int> S_;
-	vector<int> E_;
-	vector<int> I_;
-	vector<int> R_;
-	vector<int> D_;
+	vector<unsigned int> S_;
+	vector<unsigned int> E_;
+	vector<unsigned int> I_;
+	vector<unsigned int> R_;
+	vector<unsigned int> D_;
 	vector<double> t_;
 	double latency_rate;
 	double transmission_rate;
@@ -29,7 +29,7 @@ private:
 	unordered_set<Node*> exposeds;
 	unordered_set<Node*> infecteds;
 
-	void updateMetrics(const vector<int> & metrics_at_step){
+	void updateMetrics(const vector<unsigned int> & metrics_at_step){
 		S_.push_back(metrics_at_step[0]);
 		E_.push_back(metrics_at_step[1]);
 		I_.push_back(metrics_at_step[2]);
@@ -40,7 +40,7 @@ private:
 	void evolveStep(){
 // getting new timestamp
 		t_.push_back(time_gen_());
-		cout << "\n\ntime : " << t_.back() << endl; //////////////////////////
+		logstream << "\n\ntime : " << t_.back() << endl; //////////////////////////
 // loop over the infecteds
 		for (auto node : infecteds){
 			node->infect(transmission_rate);
@@ -51,7 +51,7 @@ private:
 			node->incubate(latency_rate);
 		}
 // collecting new statuses
-		vector<int> SEIRD(5, 0);
+		vector<unsigned int> SEIRD(5, 0);
 		exposeds.clear();
 		infecteds.clear();
 		for (auto node : nodes_){
@@ -64,21 +64,21 @@ private:
 				infecteds.insert(node);
 			}
 		}
-		cout << "SEIRD :"; //////////////////////////
+		logstream << "SEIRD :"; //////////////////////////
 		for (auto i : SEIRD){ //////////////////////////
-			cout << " " << i; //////////////////////////
+			logstream << " " << i; //////////////////////////
 		} //////////////////////////
-		cout << endl; //////////////////////////
-		cout << "infecteds :"; //////////////////////////
+		logstream << endl; //////////////////////////
+		logstream << "infecteds :"; //////////////////////////
 		for (auto i : infecteds){ //////////////////////////
-			cout << " " << i->id() << "(" << i->status() << ")"; //////////////////////////
+			logstream << " " << i->id() << "(" << i->status() << ")"; //////////////////////////
 		} //////////////////////////
-		cout << endl; //////////////////////////
-		cout << "exposeds :"; //////////////////////////
+		logstream << endl; //////////////////////////
+		logstream << "exposeds :"; //////////////////////////
 		for (auto i : exposeds){ //////////////////////////
-			cout << " " << i->id() << "(" << i->status() << ")"; //////////////////////////
+			logstream << " " << i->id() << "(" << i->status() << ")"; //////////////////////////
 		} //////////////////////////
-		cout << endl; //////////////////////////
+		logstream << endl; //////////////////////////
 		updateMetrics(SEIRD);
 	};
 
@@ -92,13 +92,13 @@ public:
 	~Epidemic() {};
 
 	vector<double> gett() const{	return t_;	};
-	vector<int> getS() const{	return S_;	};
-	vector<int> getE() const{	return E_;	};
-	vector<int> getI() const{	return I_;	};
-	vector<int> getR() const{	return R_;	};
-	vector<int> getD() const{	return D_;	};
+	vector<unsigned int> getS() const{	return S_;	};
+	vector<unsigned int> getE() const{	return E_;	};
+	vector<unsigned int> getI() const{	return I_;	};
+	vector<unsigned int> getR() const{	return R_;	};
+	vector<unsigned int> getD() const{	return D_;	};
 
-	void seedEpidemic(int N_initial_infectiouses){
+	void seedEpidemic(unsigned int N_initial_infectiouses){
 // selecting N_initial_infectiouses nodes at random		
 		vector<Node*> initial_infecteds = randomChoice(nodes_, N_initial_infectiouses);
 		for (auto & n : initial_infecteds){
@@ -113,18 +113,18 @@ public:
 		I_.push_back(N_initial_infectiouses);
 		R_.push_back(0);
 		D_.push_back(0);
-		cout << "\n\ntime : " << t_.back() << "\tSEIRD : ";
-		cout << S_.back() << " " << E_.back() << " " << I_.back() << " " << R_.back() << " " << D_.back() << endl;
-		cout << "infecteds :";
+		logstream << "\n\ntime : " << t_.back() << "\tSEIRD : ";
+		logstream << S_.back() << " " << E_.back() << " " << I_.back() << " " << R_.back() << " " << D_.back() << endl;
+		logstream << "infecteds :";
 		for (auto n : infecteds){
-			cout << " " << n->id() << "(" << n->status() << ")";
+			logstream << " " << n->id() << "(" << n->status() << ")";
 		}
-		cout << endl;
-		cout << "exposeds :";
+		logstream << endl;
+		logstream << "exposeds :";
 		for (auto n : exposeds){
-			cout << " " << n->id() << "(" << n->status() << ")";
+			logstream << " " << n->id() << "(" << n->status() << ")";
 		}
-		cout << endl;
+		logstream << endl;
 	}
 
 	void evolve(){

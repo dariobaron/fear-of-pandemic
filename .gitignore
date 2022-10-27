@@ -4,5 +4,8 @@
 # final executables
 *.x
 
-# input network structures
-#*.adjlist
+# notebook checkpoints
+.ipynb_checkpoints/
+
+# logfile
+log.txt

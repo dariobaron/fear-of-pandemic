@@ -31,38 +31,79 @@ if (argc != 2){
 string input_filename(argv[1]);
 
 cout << "Processing network in '" + input_filename + "'..." << endl;
+double mean_degree;
+{
+	Network network(input_filename);
+	mean_degree = network.getMeanDegree();
+}
 
 
 double delta_time(3./24);									// 3hrs [days]
 double start_time(0);
 double mu = 1. / 2 * delta_time;							// 0.5 infectivity/day
-double beta = 1. / 2 * delta_time / network.getMeanDegree();// 0.5 exposures/day
+double beta = 1. / 2 * delta_time / mean_degree;			// 0.5 exposures/day
 double gamma = 1. / 6 * delta_time;							// 0.16 recovers/day
 double f_D = 0.01;											// death probability
 
 
-Network network(input_filename);
-Discretizer time_generator(delta_time, start_time);
-Epidemic epidemic(network.getNodes(), time_generator, mu, beta, gamma, f_D);
-epidemic.seedEpidemic(2);
+unsigned int N_runs(100);
+unsigned int run(0);
+//vector<vector<double>> t;
+//vector<vector<unsigned int>> S;
+//vector<vector<unsigned int>> E;
+//vector<vector<unsigned int>> I;
+//vector<vector<unsigned int>> R;
+//vector<vector<unsigned int>> D;
 
-output.open("../output/prova.txt");
+while (run < N_runs){
+	
+	Network network(input_filename);
+	
+	Discretizer time_generator(delta_time, start_time);
 
-epidemic.evolve();
+	Epidemic epidemic(network.getNodes(), time_generator, mu, beta, gamma, f_D);
+	
+	epidemic.seedEpidemic(2);
+	epidemic.evolve();
 
-auto t = epidemic.gett();
-auto S = epidemic.getS();
-auto E = epidemic.getE();
-auto I = epidemic.getI();
-auto R = epidemic.getR();
-auto D = epidemic.getD();
-for (auto i = 0; i < t.size(); ++i){
-	output << t[i] << " " << S[i] << " " << E[i] << " " << I[i];
-	output << " " << R[i] << " " << D[i] << endl;
+	auto t_single = epidemic.gett();
+	auto S_single = epidemic.getS();
+	auto E_single = epidemic.getE();
+	auto I_single = epidemic.getI();
+	auto R_single = epidemic.getR();
+	auto D_single = epidemic.getD();
+
+	if (S_single.back() > R_single.back()){		// N.B. to be improved! Not working for general epidemic parameters
+		cerr << "Epidemic failed to spread on run " << run << ". Removed from analysis." << endl;
+	}
+	else {
+//		t.push_back(t_single);
+//		S.push_back(S_single);
+//		E.push_back(E_single);
+//		I.push_back(I_single);
+//		R.push_back(R_single);
+//		D.push_back(D_single);
+		output.open("../output/no_awareness/"+to_string(run)+".txt");
+		for (auto i = 0; i < t_single.size(); ++i){
+			output << t_single[i] << " " << S_single[i] << " " << E_single[i] << " ";
+			output << I_single[i] << " " << R_single[i] << " " << D_single[i] << endl;
+		}
+		output.close();
+		output.clear();
+		++run;
+	}
+
+	cout << "Processing : " << run * 100 / N_runs << "%\r" << flush; 
 }
+cout << "Completed" << endl;
 
-output.close();
-output.clear();
+
+//Results results(t, S, E, I, R, D);
+
+//results.compute_means();
+
+//result.print()
+
 
 return 0;
 }

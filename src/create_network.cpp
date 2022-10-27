@@ -20,6 +20,7 @@ mt19937_64 random_engine(12031997);
 Distribution<uniform_real_distribution<>,mt19937_64> uniform_distribution(uniform_real_distribution<>(0., 1.), &random_engine);
 
 ofstream output;
+ofstream logstream("log.txt");
 
 int main(int argc, char const *argv[]){
 

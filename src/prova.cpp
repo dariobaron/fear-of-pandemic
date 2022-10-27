@@ -3,36 +3,25 @@
 #include "random.hpp"
 #include "global.hpp"
 #include "distribution.hpp"
+#include "save.hpp"
 
 using namespace std;
 
 mt19937_64 random_engine(12031997);
 Distribution<uniform_real_distribution<>,mt19937_64> uniform_distribution(uniform_real_distribution<>(0., 1.), &random_engine);
 
+ofstream logstream("log.txt");
+
 int main(){
 
-vector<int> prova({1,2,3,4,5,6,7,8,9,10});
+vector<double> prova0({0.125,0.25,0.375,0.5,0.625,0.75});
+vector<int> prova1({1,2,3,4,5,6});
+vector<int> prova2({1,2,3,4,5,6});
+vector<int> prova3({1,2,3,4,5,6});
+vector<int> prova4({1,2,3,4,5,6});
+vector<int> prova5({1,2,3,4,5,6});
 
-cout << prova.size() << endl;
 
-for (auto i : prova){
-	cout << i << " ";
-}
-cout << endl;
-
-auto v = randomChoice(prova, 8);
-
-for (auto i : v){
-	cout << i << " ";
-}
-cout << endl;
-
-v = randomChoice(prova, 8, true);
-
-for (auto i : v){
-	cout << i << " ";
-}
-cout << endl;
 
 return 0;
 }
