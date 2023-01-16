@@ -13,45 +13,44 @@
 #include "node.hpp"
 #include "random.hpp"
 
-using namespace std;
 
 class Network{
 
 protected:
-	vector<Node*> nodes_;
+	std::vector<Node*> nodes_;
 	int N_nodes_;
 
 private:
-	map<int,unsigned int> ID_to_idx_;
+	std::map<int,unsigned int> ID_to_idx_;
 
 public:
-	Network(const string inputfile, const string format="adjlist") : nodes_(0), N_nodes_(0) {
-		ifstream input(inputfile);
+	Network(const std::string inputfile, const std::string format="adjlist") : nodes_(0), N_nodes_(0) {
+		std::ifstream input(inputfile);
 		if (input.is_open()){
 			if (format == "adjlist"){
 // skipping the first three rows of comments
 				for (auto i = 0; i < 3; ++i){
-					input.ignore(numeric_limits<streamsize>::max(), '\n');
+					input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				}
 // reading the whole file storing in a vector of strings (lines)
 // N.B. BE AWARE OF BIG FILES: they are fully loaded, and they must fit in RAM
-				vector<string> lines;					// file content
-				string line;							// temporary string to use getline
-				int source;								// temporary string to use getline
+				std::vector<std::string> lines;				// file content
+				std::string line;							// temporary string to use getline
+				int source;									// temporary string to use getline
 				while (!input.eof()){
-					getline(input, line);				// reading a line
-					stringstream ss(line);				// using stringstream to read the values
+					std::getline(input, line);				// reading a line
+					std::stringstream ss(line);				// using stringstream to read the values
 // storing the first integer as node ID and creating the node
-					if (ss >> source){					// check for the good input
-						lines.push_back(line);			// storing the lines in RAM
-						ID_to_idx_[source] = N_nodes_;	// N_nodes_ is not yet updated, so it is the index to the correct position
-						++N_nodes_;						// N_nodes_ update
+					if (ss >> source){						// check for the good input
+						lines.push_back(line);				// storing the lines in RAM
+						ID_to_idx_[source] = N_nodes_;		// N_nodes_ is not yet updated, so it is the index to the correct position
+						++N_nodes_;							// N_nodes_ update
 						nodes_.push_back(new Node(source));
 					}
 				}
 // creating the edges
 				for (auto & line : lines){
-					stringstream ss(line);				// using stringstream to read the values
+					std::stringstream ss(line);				// using stringstream to read the values
 					int source, target;
 					ss >> source;
 					while (ss >> target || !ss.eof()){
@@ -65,7 +64,7 @@ public:
 			}
 			input.close();
 		}
-		else{ throw ios_base::failure("File not found: " + inputfile); }
+		else{ throw std::ios_base::failure("File not found: " + inputfile); }
 	};
 
 	Network(const int N) : nodes_(N), N_nodes_(N) {
@@ -85,10 +84,10 @@ public:
 	template<typename Distribution>
 	void initEdgesBianconiBarabasi(Distribution & fitness_distr, int edges_per_node){
 // utility vectors for the probability of new link
-		vector<int> degree(N_nodes_, edges_per_node);
-		vector<double> fitness(N_nodes_);
+		std::vector<int> degree(N_nodes_, edges_per_node);
+		std::vector<double> fitness(N_nodes_);
 		for (auto i = 0; i < N_nodes_; ++i){
-			fitness[i] = fitness_distr(random_engine);
+			fitness[i] = fitness_distr();
 			nodes_[i]->fitness(fitness[i]);
 		}
 // building the initial fully-connected core
@@ -98,11 +97,11 @@ public:
 				nodes_[j]->addConnection(nodes_[i]);
 			}
 		}
-		vector<double> probability(N_nodes_, 0);
-		transform(degree.begin(), degree.begin()+edges_per_node+1, fitness.begin(), probability.begin(), multiplies<double>());
+		std::vector<double> probability(N_nodes_, 0);
+		std::transform(degree.begin(), degree.begin()+edges_per_node+1, fitness.begin(), probability.begin(), std::multiplies<double>());
 // building the rest of the network, node by node
 		for (auto i = edges_per_node + 1; i < N_nodes_; ++i){
-			vector<Node*> elected = randomChoice(vector<Node*>(nodes_.begin(), nodes_.begin()+i), edges_per_node, probability);
+			std::vector<Node*> elected = randomChoice(std::vector<Node*>(nodes_.begin(), nodes_.begin()+i), edges_per_node, probability);
 			for (auto n : elected){
 				int n_id = ID_to_idx_[n->id()];
 				++degree[n_id];
@@ -112,11 +111,11 @@ public:
 			}
 			degree[i] += edges_per_node;
 			probability[i] += edges_per_node * fitness[i];
-			cout << "Processing... " << 100*i/N_nodes_ << "%\r" << flush;
+			std::cout << "Processing... " << 100*i/N_nodes_ << "%\r" << std::flush;
 		}
 	}
 	
-	vector<Node*> getNodes() const{ return nodes_; };
+	std::vector<Node*> getNodes() const{ return nodes_; };
 
 	double getMeanDegree() const{
 		int total_degree = 0;
@@ -126,6 +125,10 @@ public:
 		return total_degree / 2. / N_nodes_;
 	};
 
+	int size() const{
+		return nodes_.size();
+	}
+
 	bool checkIdIntegrity() const{
 		for (auto & p : ID_to_idx_){
 			if (p.first != p.second){	return false;	}
@@ -133,8 +136,8 @@ public:
 		return true;
 	};
 
-	void writeAdjlist(const string outputfile) const{
-		ofstream output(outputfile);
+	void writeAdjlist(const std::string outputfile) const{
+		std::ofstream output(outputfile);
 		if (output.is_open()){
 			// three (empty) comment lines
 			output << "#\n#\n#";
@@ -143,14 +146,14 @@ public:
 				output << "\n" << node->id();
 				auto connections = node->connections();
 				for (auto & p : connections){
-					if (p.first->id() > node->id()){
-						output << " " << p.first->id();
+					if (p->id() > node->id()){
+						output << " " << p->id();
 					}
 				}
 			}
 			output.close();
 		}
-		else{ throw ios_base::failure("Impossible to open: " + outputfile); }
+		else{ throw std::ios_base::failure("Impossible to open: " + outputfile); }
 	};
 
 };

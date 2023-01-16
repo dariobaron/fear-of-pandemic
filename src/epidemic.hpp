@@ -7,29 +7,36 @@
 #include "node.hpp"
 #include "discretizer.hpp"
 #include "random.hpp"
+#include "awareness.hpp"
+#include "distribution.hpp"
+
 
 class Epidemic{
 
 protected:
-	vector<Node*> nodes_;
-	vector<unsigned int> S_;
-	vector<unsigned int> E_;
-	vector<unsigned int> I_;
-	vector<unsigned int> R_;
-	vector<unsigned int> D_;
-	vector<double> t_;
-	double latency_rate;
-	double transmission_rate;
-	double recovery_rate;
-	double fatality_probability;
+	std::vector<Node*> nodes_;
+	std::vector<unsigned int> S_;
+	std::vector<unsigned int> E_;
+	std::vector<unsigned int> I_;
+	std::vector<unsigned int> R_;
+	std::vector<unsigned int> D_;
+	std::vector<double> t_;
+	Awareness & awareness_;
+	Distribution & fear_distribution_;
+	double latency_rate_;
+	double transmission_rate_;
+	double recovery_rate_;
+	double fatality_probability_;
+	bool outbreak_;
+	bool cut_connections_;
 
 
 private:
 	Discretizer time_gen_;
-	unordered_set<Node*> exposeds;
-	unordered_set<Node*> infecteds;
+	std::unordered_set<Node*> exposeds_;
+	std::unordered_set<Node*> infecteds_;
 
-	void updateMetrics(const vector<unsigned int> & metrics_at_step){
+	void updateMetrics(const std::vector<unsigned int> & metrics_at_step){
 		S_.push_back(metrics_at_step[0]);
 		E_.push_back(metrics_at_step[1]);
 		I_.push_back(metrics_at_step[2]);
@@ -40,71 +47,73 @@ private:
 	void evolveStep(){
 // getting new timestamp
 		t_.push_back(time_gen_());
-		logstream << "\n\ntime : " << t_.back() << endl; //////////////////////////
+		awareness_.setGlobalMetric(I_, D_);
 // loop over the infecteds
-		for (auto node : infecteds){
-			node->infect(transmission_rate);
-			node->recover(recovery_rate, fatality_probability);
+		for (auto node : infecteds_){
+			auto contacts = awareness_.computeContacts(node);
+			node->infect(transmission_rate_, contacts);
+			node->recover(recovery_rate_, fatality_probability_);
 		}
 // loop over the exposed
-		for (auto node : exposeds){
-			node->incubate(latency_rate);
+		for (auto node : exposeds_){
+			node->incubate(latency_rate_);
 		}
 // collecting new statuses
-		vector<unsigned int> SEIRD(5, 0);
-		exposeds.clear();
-		infecteds.clear();
+		std::vector<unsigned int> SEIRD(5, 0);
+		exposeds_.clear();
+		infecteds_.clear();
 		for (auto node : nodes_){
 			node->updateStatus();
 			SEIRD[node->status()]++;
 			if (node->status() == 1){
-				exposeds.insert(node);
+				exposeds_.insert(node);
 			}
 			else if (node->status() == 2){
-				infecteds.insert(node);
+				infecteds_.insert(node);
 			}
 		}
-		logstream << "SEIRD :"; //////////////////////////
-		for (auto i : SEIRD){ //////////////////////////
-			logstream << " " << i; //////////////////////////
-		} //////////////////////////
-		logstream << endl; //////////////////////////
-		logstream << "infecteds :"; //////////////////////////
-		for (auto i : infecteds){ //////////////////////////
-			logstream << " " << i->id() << "(" << i->status() << ")"; //////////////////////////
-		} //////////////////////////
-		logstream << endl; //////////////////////////
-		logstream << "exposeds :"; //////////////////////////
-		for (auto i : exposeds){ //////////////////////////
-			logstream << " " << i->id() << "(" << i->status() << ")"; //////////////////////////
-		} //////////////////////////
-		logstream << endl; //////////////////////////
+// updating the internal compartmental metrics
 		updateMetrics(SEIRD);
+// checking if the epidemic has broken out
+		if (!outbreak_){
+			outbreak_ = I_.back() > 2 * I_[0];
+		}
 	};
 
 public:
-	Epidemic(vector<Node*> v, Discretizer & time_gen,
-		double mu, double beta, double gamma, double f_D) : nodes_(v),
-	S_(0), E_(0), I_(0), R_(0), D_(0),
-	latency_rate(mu), transmission_rate(beta), recovery_rate(gamma), fatality_probability(f_D),
-	time_gen_(time_gen), exposeds(), infecteds() {};
+	Epidemic(std::vector<Node*> v, Discretizer & time_gen, Awareness & awareness, Distribution & fear_distribution,
+			double mu, double beta, double gamma, double f_D) :
+			nodes_(v), S_(0), E_(0), I_(0), R_(0), D_(0), awareness_(awareness), fear_distribution_(fear_distribution),
+			latency_rate_(mu), transmission_rate_(beta), recovery_rate_(gamma), fatality_probability_(f_D),
+			outbreak_(false), time_gen_(time_gen), exposeds_(), infecteds_()
+			{
+				for (auto n : nodes_){
+					n->status(0);
+					n->updateStatus();
+					n->fear(fear_distribution_());
+				}
 
-	~Epidemic() {};
+	};
 
-	vector<double> gett() const{	return t_;	};
-	vector<unsigned int> getS() const{	return S_;	};
-	vector<unsigned int> getE() const{	return E_;	};
-	vector<unsigned int> getI() const{	return I_;	};
-	vector<unsigned int> getR() const{	return R_;	};
-	vector<unsigned int> getD() const{	return D_;	};
+	~Epidemic(){
+		fear_distribution_.reset();
+		awareness_.reset();
+	};
+
+	std::vector<double> gett() const{	return t_;	};
+	std::vector<unsigned int> getS() const{	return S_;	};
+	std::vector<unsigned int> getE() const{	return E_;	};
+	std::vector<unsigned int> getI() const{	return I_;	};
+	std::vector<unsigned int> getR() const{	return R_;	};
+	std::vector<unsigned int> getD() const{	return D_;	};
 
 	void seedEpidemic(unsigned int N_initial_infectiouses){
 // selecting N_initial_infectiouses nodes at random		
-		vector<Node*> initial_infecteds = randomChoice(nodes_, N_initial_infectiouses);
+		std::vector<Node*> initial_infecteds = randomChoice(nodes_, N_initial_infectiouses);
 		for (auto & n : initial_infecteds){
 			n->status(2);
 			n->updateStatus();
-			infecteds.insert(n);
+			infecteds_.insert(n);
 		}
 // updating the metrics vectors
 		t_.push_back(time_gen_.get());
@@ -113,24 +122,17 @@ public:
 		I_.push_back(N_initial_infectiouses);
 		R_.push_back(0);
 		D_.push_back(0);
-		logstream << "\n\ntime : " << t_.back() << "\tSEIRD : ";
-		logstream << S_.back() << " " << E_.back() << " " << I_.back() << " " << R_.back() << " " << D_.back() << endl;
-		logstream << "infecteds :";
-		for (auto n : infecteds){
-			logstream << " " << n->id() << "(" << n->status() << ")";
-		}
-		logstream << endl;
-		logstream << "exposeds :";
-		for (auto n : exposeds){
-			logstream << " " << n->id() << "(" << n->status() << ")";
-		}
-		logstream << endl;
 	}
 
 	void evolve(){
 		while (E_.back()+I_.back() != 0){
 			evolveStep();
 		}
+		awareness_.reset();
+	}
+
+	bool outbreakHappened(){
+		return outbreak_;
 	}
 
 };

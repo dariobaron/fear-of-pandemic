@@ -10,10 +10,10 @@ EXECUTABLES := create_network.x simulation.x prova.x
 # compiler directives
 WARNING := -Wall -Wpedantic -Wextra -Wno-sign-compare
 CXX := g++
-CXXFLAGS := -O3
+CXXFLAGS := -O3 -std=c++17
 
 
-.PHONY: all clean
+.PHONY: all clean profile
 
 
 all: $(EXECUTABLES)

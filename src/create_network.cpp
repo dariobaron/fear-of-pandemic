@@ -17,7 +17,7 @@
 using namespace std;
 
 mt19937_64 random_engine(12031997);
-Distribution<uniform_real_distribution<>,mt19937_64> uniform_distribution(uniform_real_distribution<>(0., 1.), &random_engine);
+UniformDistribution uniform_distribution(random_engine);
 
 ofstream output;
 ofstream logstream("log.txt");
@@ -44,7 +44,7 @@ cout << "Creating network in '" + output_filename + "'..." << endl;
 
 Network network(N_nodes);
 
-uniform_real_distribution<> fitness_distribution(0, 1);
+UniformDistribution fitness_distribution(random_engine, 0, 1);
 network.initEdgesBianconiBarabasi(fitness_distribution, edges_per_node);
 
 if (network.checkIdIntegrity()){

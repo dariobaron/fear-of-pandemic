@@ -1,11 +1,14 @@
 #ifndef node_h
 #define node_h
 
-#include <map>
+#include <set>
 #include <utility>
+#include "random.hpp"
 #include "global.hpp"
 
-using namespace std;
+
+class Awareness;
+
 
 class Node{
 
@@ -14,8 +17,10 @@ protected:
 	short int status_;
 	int degree_;
 	double fitness_;
-	map<Node*,double> connections_;
+	std::set<Node*> connections_;
 	double fear_;
+
+private:
 	short int new_status_;
 
 public:
@@ -34,15 +39,9 @@ public:
 	double fitness() const{	return fitness_;	};
 	void fitness(double f){	fitness_ = f;	};
 	
-	void addConnection(Node* target, double weight=1){
-		connections_.insert(pair<Node*,double>(target, weight));
+	void addConnection(Node* target){
+		connections_.insert(target);
 		++degree_;
-	};
-	void changeConnection(Node* target, double weight){	connections_[target] = weight;	};
-	void changeAllConnection(double weight){
-		for (auto & p : connections_){
-			p.second = weight;
-		}
 	};
 	void removeConnection(Node* target){
 		connections_.erase(target);
@@ -54,50 +53,55 @@ public:
 
 	void updateStatus(){	status_ = new_status_; };
 
-	map<Node*,double> connections() const{	return connections_;	};
+	const std::set<Node*> & connections() const{	return connections_;	};
+	void connections(std::set<Node*> connections) {	connections_ = connections;	};
+
+	unsigned int neighboursInStatus(short int s){
+		unsigned int counter = 0;
+		for (auto n : connections_){
+			if (n->status() == s){
+				++counter;
+			}
+		}
+		return counter;
+	};
 
 	bool incubate(double latency_rate){
 		if (status_ != 1){
-			cerr << "Error: node " << this << "(" << id_ << ")" << " incubated while not exposed. Current status is " << status_ << endl;
+			std::cerr << "Error: node " << this << "(" << id_ << ")" << " incubated while not exposed. Current status is " << status_ << std::endl;
 		}
 		bool incubated = uniform_distribution() <= latency_rate;
 		if (incubated){
 			new_status_ = 2;
-			logstream << id_ << " has incubated" << endl;
 		}
 		return incubated;
 	}
 	bool recover(double recovery_rate, double fatality_probability){
 		if (status_ != 2){
-			cerr << "Error: node " << this << "(" << id_ << ")" << " recovered while not infected. Current status is " << status_ << endl;
+			std::cerr << "Error: node " << this << "(" << id_ << ")" << " recovered while not infected. Current status is " << status_ << std::endl;
 		}
 		bool recovered = uniform_distribution() <= recovery_rate;
 		if (recovered){
 			if (uniform_distribution() <= fatality_probability){
 				new_status_ = 4;
-				logstream << id_ << " has dead" << endl;
 			}
 			else{
 				new_status_ = 3;
-				logstream << id_ << " has recovered" << endl;
 			}
 		}
 		return recovered;
 	}
-	void infect(double transmission_rate) const{
+	void infect(double transmission_rate, std::map<Node*,double> & contacts) const{
 		if (status_ != 2){
-			cerr << "Error: node " << this << "(" << id_ << ")" << " infecting while not infected. Current status is " << status_ << endl;
+			std::cerr << "Error: node " << this << "(" << id_ << ")" << " infecting while not infected. Current status is " << status_ << std::endl;
 		}
-		logstream << id_ << " infecting : ";
-		for (auto p : connections_){
-			if (p.first->status() == 0){
-				if (uniform_distribution() <= p.second*transmission_rate*(1-fear_)){
-					logstream << p.first->id() << " ";
-					p.first->status(1);
+		for (auto c : contacts){
+			if (c.first->status() == 0){
+				if (uniform_distribution() < transmission_rate * c.second){
+					c.first->status(1);
 				}
 			}
 		}
-		logstream << endl;
 	}
 	
 };
