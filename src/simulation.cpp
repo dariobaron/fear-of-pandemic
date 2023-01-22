@@ -31,8 +31,9 @@ for (auto i = 0; i < 10000; ++i){
 
 if (argc != 5){
 	std::cerr << "USAGE: './simulation.x [1] [2] [3] [4] [5]'\n[1] : PATH_TO_SOURCE_NETWORK\n[2] : REACTION_TYPE[soften/cut]\n";
-	std::cerr << "[3] : FEAR_DISTRIBUTION[fixed/uni/asyLow/asyHigh/bi/corr]\n[4] : FEEDBACK_TYPE[none/short/long/shortlong/neighbours/all]";
-	std::cerr << std::endl << "Terminating\t..." << std::endl;
+	std::cerr << "[3] : FEAR_DISTRIBUTION[fixed/uni/asyLow/asyHigh/bi/corr/anticorr]\n";
+	std::cerr << "[4] : FEEDBACK_TYPE[none/short/long/shortlong/neighbours/all]";
+	std::cerr << std::endl << "Terminating..." << std::endl;
 	return -1;
 }
 
@@ -88,8 +89,17 @@ else if (feedback_type == "all")		{	aware_ptr = new AllAwareness(delta_s, delta_
 else 									{	throw std::invalid_argument("Wrong FEEDBACK_TYPE passed : "+feedback_type+" is not a defined feedback type");	}
 
 
-unsigned int N_runs(100);
-unsigned int run(0);
+auto str_loc = input_filename.find("input");
+std::string output_directory = input_filename.replace(str_loc, str_loc+5, "output");
+output_directory = output_directory.substr(0, output_directory.find_last_of("."));
+output_directory = output_directory + "/REACTION" + reaction_type
+									+ "_FEAR" + fear_distribution
+									+ "_FEEDBACK" + feedback_type + "/";
+std::filesystem::create_directories(output_directory);
+
+unsigned int N_runs = 100;
+unsigned int run = 0;
+unsigned int failed_runs = 0;
 while (run < N_runs){
 	
 	Discretizer time_generator(delta_time, start_time);
@@ -101,25 +111,33 @@ while (run < N_runs){
 
 
 	if (epidemic.outbreakHappened()){
+
 		Results results(epidemic);
-		std::string output_directory = "../output/prova/REACTION" + reaction_type + "_FEAR"
-									+ fear_distribution + "_FEEDBACK" + feedback_type + "/";
-		create_directories(std::filesystem::path(output_directory));
+
 		std::string output_filename =  std::to_string(run) + ".txt";
-		output.open(output_directory+output_filename);
+		output.open(output_directory + output_filename);
+		
 		results.writeData(output);
+		
 		output.close();
 		output.clear();
+		
 		++run;
 	}
 	
 	else {
-		std::cerr << "Epidemic failed to spread on run " << run << ". Removed from analysis." << std::endl;
+		++failed_runs;
 	}
 
 	std::cout << "Processing : " << run * 100 / N_runs << "%\r" << std::flush; 
 }
-std::cout << "\t\t\t\t\rCompleted" << std::endl;
+
+output.open(output_directory + "rate_early_extinction.txt");
+output << (double)(failed_runs) / (run+failed_runs) << std::endl;
+output.close();
+output.clear();
+
+std::cout << "\r----------Completed----------" << std::endl;
 
 
 //Results results(t, S, E, I, R, D);
