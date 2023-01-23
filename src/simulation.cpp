@@ -14,6 +14,7 @@
 #include "results.hpp"
 #include "awareness.hpp"
 #include "constants.hpp"
+#include "timer.hpp"
 
 std::mt19937_64 random_engine(12031997);
 UniformDistribution uniform_distribution(random_engine);
@@ -22,6 +23,8 @@ std::ofstream output;
 std::ofstream logstream("log.txt");
 
 int main(int argc, char const *argv[]){
+
+Timer timer;
 
 // random engine burn-in
 for (auto i = 0; i < 10000; ++i){
@@ -137,7 +140,7 @@ output << (double)(failed_runs) / (run+failed_runs) << std::endl;
 output.close();
 output.clear();
 
-std::cout << "\r----------Completed----------" << std::endl;
+std::cout << "\r----------Completed in " << timer.stop() << " sec ----------" << std::endl;
 
 
 //Results results(t, S, E, I, R, D);
