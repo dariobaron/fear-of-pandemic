@@ -42,7 +42,8 @@ if (argc != 5){
 
 
 std::string input_filename(argv[1]);
-std::cout << "Processing network in '" + input_filename + "'..." << std::endl;
+std::clog << "Processing network in '" + input_filename + "'" << std::endl;
+std::clog << "with parameters REACTION_TYPE=" << argv[2] << " FEAR_DISTRIBUTION=" << argv[3] << " FEEDBACK_TYPE=" << argv[4] << std::endl;
 Network network(input_filename);
 double mean_degree = network.getMeanDegree();
 // correcting the epidemiological constants
@@ -140,7 +141,7 @@ output << (double)(failed_runs) / (run+failed_runs) << std::endl;
 output.close();
 output.clear();
 
-std::cout << "\r----------Completed in " << timer.stop() << " sec ----------" << std::endl;
+std::clog << "\r----------Completed in " << timer.stop() << " sec ----------" << std::endl << std::endl;
 
 
 //Results results(t, S, E, I, R, D);
