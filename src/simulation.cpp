@@ -33,8 +33,8 @@ for (auto i = 0; i < 10000; ++i){
 
 
 if (argc != 5){
-	std::cerr << "USAGE: './simulation.x [1] [2] [3] [4] [5]'\n[1] : PATH_TO_SOURCE_NETWORK\n[2] : REACTION_TYPE[soften/cut]\n";
-	std::cerr << "[3] : FEAR_DISTRIBUTION[fixed/uni/asyLow/asyHigh/bi/corr/anticorr]\n";
+	std::cerr << "USAGE: './simulation.x [1] [2] [3] [4] [5]'\n[1] : PATH_TO_SOURCE_NETWORK\n[2] : REACTION_TYPE[none/soften/cut]\n";
+	std::cerr << "[3] : FEAR_DISTRIBUTION[none/fixed/uni/asyLow/asyHigh/bi/corr/anticorr]\n";
 	std::cerr << "[4] : FEEDBACK_TYPE[none/short/long/shortlong/neighbours/all]";
 	std::cerr << std::endl << "Terminating..." << std::endl;
 	return -1;
@@ -60,6 +60,7 @@ std::string reaction_type(argv[2]);
 bool cut_connections;
 if (reaction_type == "soften"){	cut_connections = false;	}
 else if (reaction_type == "cut"){	cut_connections = true;	}
+else if (reaction_type == "none"){}
 else {	throw std::invalid_argument("Wrong REACTION_TYPE passed : "+reaction_type+" is not a defined reaction type");	}
 
 
@@ -79,6 +80,7 @@ else if (fear_distribution == "anticorr" || fear_distribution == "corr"){
 	if (fear_distribution == "anticorr"){	fear_distr = new AntiCorrDistribution(random_engine, degrees);	}
 	else if (fear_distribution == "corr"){	fear_distr = new CorrDistribution(random_engine, degrees);	}
 }
+else if (fear_distribution == "none")		{}
 else										{	throw std::invalid_argument("Wrong FEAR_DISTRIBUTION passed : "+fear_distribution+" is not a defined distribution for fear");	}
 
 

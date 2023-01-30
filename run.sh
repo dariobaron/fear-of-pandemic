@@ -8,14 +8,15 @@ cd ../
 
 REACTIONTYPE=( 'soften' 'cut' )
 FEARDISTRIBUTION=( 'fixed' 'uni' 'asyLow' 'asyHigh' 'bi' 'corr' 'anticorr' )
-FEEDBACKTYPE=( 'none' 'short' 'long' 'shortlong' 'neighbours' 'all' )
+FEEDBACKTYPE=( 'short' 'long' 'shortlong' 'neighbours' 'all' )
 
 outputdir="${1/input/"output"}"
 outputdir="${outputdir%.*}"
 mkdir -p $outputdir
 
 outputfile="$outputdir/execution_log.txt"
-echo "" >$outputfile
+
+src/simulation.x $1 'none', 'none', 'none' >$outputfile
 
 if [[ $# -eq 1 && -e $1 ]]; then
 	for reaction in "${REACTIONTYPE[@]}"; do
