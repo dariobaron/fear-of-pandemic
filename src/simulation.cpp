@@ -60,7 +60,7 @@ std::string reaction_type(argv[2]);
 bool cut_connections;
 if (reaction_type == "soften"){	cut_connections = false;	}
 else if (reaction_type == "cut"){	cut_connections = true;	}
-else if (reaction_type == "none"){}
+else if (reaction_type == "none"){	cut_connections = false;	}
 else {	throw std::invalid_argument("Wrong REACTION_TYPE passed : "+reaction_type+" is not a defined reaction type");	}
 
 
@@ -80,7 +80,7 @@ else if (fear_distribution == "anticorr" || fear_distribution == "corr"){
 	if (fear_distribution == "anticorr"){	fear_distr = new AntiCorrDistribution(random_engine, degrees);	}
 	else if (fear_distribution == "corr"){	fear_distr = new CorrDistribution(random_engine, degrees);	}
 }
-else if (fear_distribution == "none")		{}
+else if (fear_distribution == "none")		{	fear_distr = new DeltaDistribution(random_engine, 1);	}
 else										{	throw std::invalid_argument("Wrong FEAR_DISTRIBUTION passed : "+fear_distribution+" is not a defined distribution for fear");	}
 
 
