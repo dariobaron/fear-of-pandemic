@@ -10,17 +10,18 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <filesystem>
+#include "constants.hpp"
 #include "global.hpp"
 #include "network.hpp"
 #include "distribution.hpp"
 
-using namespace std;
 
-mt19937_64 random_engine(12031997);
+std::mt19937_64 random_engine(12031997);
 UniformDistribution uniform_distribution(random_engine);
 
-ofstream output;
-ofstream logstream("log.txt");
+std::ofstream output;
+std::ofstream logstream("log.txt");
 
 int main(int argc, char const *argv[]){
 
@@ -29,32 +30,30 @@ for (auto i = 0; i < 10000; ++i){
 }
 
 if (argc != 3){
-	cerr << "USAGE: './create_network.x NUMBER_OF_NODES EDGES_PER_NODE'" << endl << "Terminating\t..." << endl;
+	std::cerr << "USAGE: './create_network.x NUMBER_OF_NODES EDGES_PER_NODE'" << std::endl << "Terminating..." << std::endl;
 	return -1;
 }
 
 int N_nodes, edges_per_node;
-stringstream ss;
+std::stringstream ss;
 ss << argv[1] << " " << argv[2];
 ss >> N_nodes >> edges_per_node;
 
-string output_filename = "../input/bianconi-barabasi_" + string(argv[1]) + "_" + string(argv[2]) + ".adjlist";
+std::string output_directory = "../input/bianconi-barabasi_" + std::string(argv[1]) + "_" + std::string(argv[2]) + "/";
+std::filesystem::create_directories(output_directory);
 
-cout << "Creating network in '" + output_filename + "'..." << endl;
+for (auto run = 0; run < N_runs; ++run){
+    std::string output_filename =  output_directory + std::to_string(run) + ".adjlist";
 
-Network network(N_nodes);
+    std::cout << "Creating network in '" + output_filename + "'..." << std::endl;
 
-UniformDistribution fitness_distribution(random_engine, 0, 1);
-network.initEdgesBianconiBarabasi(fitness_distribution, edges_per_node);
+    Network network(N_nodes);
 
-if (network.checkIdIntegrity()){
-    cout << "OK : The node index corresponds to its ID" << endl;
+    UniformDistribution fitness_distribution(random_engine, 0, 1);
+    network.initEdgesBianconiBarabasi(fitness_distribution, edges_per_node);
+
+    network.writeAdjlist(output_filename);
 }
-else{
-    cout << "ERR : There was an error in the network" << endl;
-}
-
-network.writeAdjlist(output_filename);
 
 return 0;
 }

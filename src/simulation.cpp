@@ -41,9 +41,10 @@ if (argc != 5){
 }
 
 
-std::string input_filename(argv[1]);
-std::clog << "Processing network in '" + input_filename + "'" << std::endl;
+std::string input_directory(argv[1]);
+std::clog << "Processing network in '" + input_directory + "'" << std::endl;
 std::clog << "with parameters REACTION_TYPE=" << argv[2] << " FEAR_DISTRIBUTION=" << argv[3] << " FEEDBACK_TYPE=" << argv[4] << std::endl;
+std::string input_filename = input_directory + "0.adjlist";
 Network network(input_filename);
 double mean_degree = network.getMeanDegree();
 // correcting the epidemiological constants
@@ -95,18 +96,20 @@ else if (feedback_type == "all")		{	aware_ptr = new AllAwareness(delta_s, delta_
 else 									{	throw std::invalid_argument("Wrong FEEDBACK_TYPE passed : "+feedback_type+" is not a defined feedback type");	}
 
 
-auto str_loc = input_filename.find("input");
-std::string output_directory = input_filename.replace(str_loc, str_loc+5, "output");
-output_directory = output_directory.substr(0, output_directory.find_last_of("."));
-output_directory = output_directory + "/REACTION" + reaction_type
+std::string output_directory = input_directory;
+auto str_loc = output_directory.find("input");
+output_directory.replace(str_loc, str_loc+5, "output");
+output_directory = output_directory + "REACTION" + reaction_type
 									+ "_FEAR" + fear_distribution
 									+ "_FEEDBACK" + feedback_type + "/";
 std::filesystem::create_directories(output_directory);
 
-unsigned int N_runs = 100;
-unsigned int run = 0;
-unsigned int failed_runs = 0;
+unsigned run = 0;
+unsigned failed_runs = 0;
 while (run < N_runs){
+
+	input_filename = std::to_string(run) + ".adjlist";
+	Network network(input_directory + input_filename);
 	
 	Discretizer time_generator(delta_time, start_time);
 
