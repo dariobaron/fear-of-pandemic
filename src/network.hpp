@@ -113,6 +113,18 @@ public:
 			probability[i] += edges_per_node * fitness[i];
 			std::cout << "Processing... " << 100*i/N_nodes_ << "%\r" << std::flush;
 		}
+// extending the initial fully-connected core to add the links not added in the initial phase
+		for (auto i = 1; i < edges_per_node + 1; ++i){
+			unsigned added = 0;
+			while (added < i){
+				Node * candidate = nodes_[uniform_distribution() * N_nodes_];
+				if (!nodes_[i]->isInContact(candidate)){
+					candidate->addConnection(nodes_[i]);
+					nodes_[i]->addConnection(candidate);
+					++added;
+				}
+			}
+		}
 	}
 	
 	std::vector<Node*> getNodes() const{ return nodes_; };
@@ -122,7 +134,7 @@ public:
 		for (auto node : nodes_){
 			total_degree += node->degree();
 		}
-		return total_degree / 2. / N_nodes_;
+		return 1. * total_degree / N_nodes_;
 	};
 
 	int size() const{

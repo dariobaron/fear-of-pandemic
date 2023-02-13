@@ -56,6 +56,8 @@ public:
 	const std::set<Node*> & connections() const{	return connections_;	};
 	void connections(std::set<Node*> connections) {	connections_ = connections;	};
 
+	bool isInContact(Node * other) const{	return	connections_.find(other) != connections_.end();	}
+
 	unsigned int neighboursInStatus(short int s){
 		unsigned int counter = 0;
 		for (auto n : connections_){

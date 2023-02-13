@@ -5,6 +5,9 @@
 // number of runs for each set of (hyper/)parameters
 constexpr unsigned N_runs = 100;
 
+// initial infecteds
+constexpr unsigned I0 = 1;
+
 // time discretization
 constexpr double delta_time = 3./24;					// 3hrs [days]
 

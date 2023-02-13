@@ -115,7 +115,7 @@ while (run < N_runs){
 
 	Epidemic epidemic(network.getNodes(), time_generator, *aware_ptr, *fear_distr, mu, beta, ggamma, f_D);
 	
-	epidemic.seedEpidemic(2);
+	epidemic.seedEpidemic(I0);
 	epidemic.evolve();
 
 
