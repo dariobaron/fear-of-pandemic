@@ -1,6 +1,6 @@
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=none FEAR_DISTRIBUTION=none FEEDBACK_TYPE=none
-----------Completed in 42 sec ----------
+----------Completed in 43 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=short
@@ -8,107 +8,107 @@ with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=short
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=long
-----------Completed in 29 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=shortlong
-----------Completed in 19 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=neighbours
-----------Completed in 615 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=all
-----------Completed in 266 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=short
-----------Completed in 19 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=long
-----------Completed in 27 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=shortlong
-----------Completed in 20 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=neighbours
-----------Completed in 614 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=all
-----------Completed in 264 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=short
-----------Completed in 20 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=long
-----------Completed in 26 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=shortlong
-----------Completed in 19 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=neighbours
-----------Completed in 638 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=all
-----------Completed in 249 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=short
-----------Completed in 19 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=long
-----------Completed in 31 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=shortlong
-----------Completed in 18 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=neighbours
-----------Completed in 595 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=all
-----------Completed in 295 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=short
-----------Completed in 21 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=long
 ----------Completed in 25 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=shortlong
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=shortlong
+----------Completed in 17 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=neighbours
+----------Completed in 481 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=all
+----------Completed in 212 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=short
+----------Completed in 17 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=long
+----------Completed in 21 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=shortlong
+----------Completed in 19 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=neighbours
+----------Completed in 517 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=all
+----------Completed in 199 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=short
+----------Completed in 17 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=long
+----------Completed in 24 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=shortlong
+----------Completed in 16 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=neighbours
+----------Completed in 504 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=all
+----------Completed in 208 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=short
+----------Completed in 21 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=long
+----------Completed in 21 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=shortlong
+----------Completed in 16 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=neighbours
+----------Completed in 506 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=all
+----------Completed in 216 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=short
 ----------Completed in 20 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=long
+----------Completed in 23 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=shortlong
+----------Completed in 17 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=neighbours
-----------Completed in 623 sec ----------
+----------Completed in 494 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=all
-----------Completed in 255 sec ----------
+----------Completed in 200 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=short
-----------Completed in 32 sec ----------
+----------Completed in 31 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=long
-----------Completed in 37 sec ----------
+----------Completed in 36 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=shortlong
@@ -116,11 +116,11 @@ with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=shortl
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=neighbours
-----------Completed in 697 sec ----------
+----------Completed in 562 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=all
-----------Completed in 452 sec ----------
+----------Completed in 361 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=short
@@ -128,19 +128,19 @@ with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=sh
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=long
-----------Completed in 24 sec ----------
+----------Completed in 21 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=shortlong
-----------Completed in 18 sec ----------
+----------Completed in 16 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=neighbours
-----------Completed in 576 sec ----------
+----------Completed in 460 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=all
-----------Completed in 250 sec ----------
+----------Completed in 188 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=short
@@ -148,87 +148,87 @@ with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=short
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=long
-----------Completed in 36 sec ----------
+----------Completed in 26 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=shortlong
-----------Completed in 19 sec ----------
+----------Completed in 18 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=neighbours
-----------Completed in 637 sec ----------
+----------Completed in 523 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=fixed FEEDBACK_TYPE=all
-----------Completed in 252 sec ----------
+----------Completed in 218 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=short
-----------Completed in 22 sec ----------
+----------Completed in 20 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=long
-----------Completed in 31 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=shortlong
-----------Completed in 22 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=neighbours
-----------Completed in 635 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=all
-----------Completed in 275 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=short
-----------Completed in 21 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=long
-----------Completed in 32 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=shortlong
-----------Completed in 22 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=neighbours
-----------Completed in 641 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=all
-----------Completed in 282 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=short
-----------Completed in 22 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=long
-----------Completed in 33 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=shortlong
-----------Completed in 23 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=neighbours
-----------Completed in 634 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=all
-----------Completed in 250 sec ----------
-
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=short
 ----------Completed in 25 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=shortlong
+----------Completed in 17 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=neighbours
+----------Completed in 497 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=uni FEEDBACK_TYPE=all
+----------Completed in 210 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=short
+----------Completed in 22 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=long
+----------Completed in 24 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=shortlong
+----------Completed in 18 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=neighbours
+----------Completed in 522 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyLow FEEDBACK_TYPE=all
+----------Completed in 200 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=short
+----------Completed in 18 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=long
+----------Completed in 27 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=shortlong
+----------Completed in 17 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=neighbours
+----------Completed in 497 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=asyHigh FEEDBACK_TYPE=all
+----------Completed in 212 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
+with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=short
+----------Completed in 20 sec ----------
+
+Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=long
-----------Completed in 32 sec ----------
+----------Completed in 23 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=shortlong
@@ -236,49 +236,49 @@ with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=shortlong
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=neighbours
-----------Completed in 624 sec ----------
+----------Completed in 521 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=bi FEEDBACK_TYPE=all
-----------Completed in 261 sec ----------
+----------Completed in 216 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=short
-----------Completed in 39 sec ----------
+----------Completed in 35 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=long
-----------Completed in 44 sec ----------
+----------Completed in 38 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=shortlong
-----------Completed in 42 sec ----------
+----------Completed in 35 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=neighbours
-----------Completed in 666 sec ----------
+----------Completed in 586 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=corr FEEDBACK_TYPE=all
-----------Completed in 469 sec ----------
+----------Completed in 351 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=short
-----------Completed in 23 sec ----------
+----------Completed in 19 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=long
-----------Completed in 27 sec ----------
+----------Completed in 23 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=shortlong
-----------Completed in 20 sec ----------
+----------Completed in 17 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=neighbours
-----------Completed in 592 sec ----------
+----------Completed in 449 sec ----------
 
 Processing network in 'input/bianconi-barabasi_10000_5/'
 with parameters REACTION_TYPE=cut FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=all
-----------Completed in 233 sec ----------
+----------Completed in 196 sec ----------
 
