@@ -76,7 +76,7 @@ private:
 		updateMetrics(SEIRD);
 // checking if the epidemic has broken out
 		if (!outbreak_){
-			outbreak_ = I_.back() > 2 * I_[0];
+			outbreak_ = I_.back() > 10 * I_[0];
 		}
 	};
 
