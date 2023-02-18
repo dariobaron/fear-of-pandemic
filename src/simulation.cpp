@@ -33,10 +33,12 @@ for (auto i = 0; i < 10000; ++i){
 
 
 if (argc != 5){
-	std::cerr << "USAGE: './simulation.x [1] [2] [3] [4] [5]'\n[1] : PATH_TO_SOURCE_NETWORK\n[2] : REACTION_TYPE[none/soften/cut]\n";
-	std::cerr << "[3] : FEAR_DISTRIBUTION[none/fixed/uni/asyLow/asyHigh/bi/corr/anticorr]\n";
-	std::cerr << "[4] : FEEDBACK_TYPE[none/short/long/shortlong/neighbours/all]";
-	std::cerr << std::endl << "Terminating..." << std::endl;
+	std::cerr << "USAGE: './simulation.x [1] [2] [3] [4]'" << std::endl;
+	std::cerr << "[1] : PATH_TO_SOURCE_NETWORK" << std::endl;
+	std::cerr << "[2] : REACTION_TYPE[none/soften/cut]" << std::endl;
+	std::cerr << "[3] : FEAR_DISTRIBUTION[none/fixed/uni/asyLow/asyHigh/bi/corr/anticorr]" << std::endl;
+	std::cerr << "[4] : FEEDBACK_TYPE[none/short/long/shortlong/neighbours/all]" << std::endl;
+	std::cerr << "Terminating..." << std::endl;
 	return -1;
 }
 
