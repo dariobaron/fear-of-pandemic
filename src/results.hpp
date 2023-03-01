@@ -56,8 +56,8 @@ public:
 		record_type.insertMember("S", HOFFSET(Epidemic::Record, S), H5::PredType::NATIVE_UINT);
 		record_type.insertMember("E", HOFFSET(Epidemic::Record, E), H5::PredType::NATIVE_UINT);
 		record_type.insertMember("I", HOFFSET(Epidemic::Record, I), H5::PredType::NATIVE_UINT);
-		record_type.insertMember("E", HOFFSET(Epidemic::Record, E), H5::PredType::NATIVE_UINT);
 		record_type.insertMember("R", HOFFSET(Epidemic::Record, R), H5::PredType::NATIVE_UINT);
+		record_type.insertMember("D", HOFFSET(Epidemic::Record, D), H5::PredType::NATIVE_UINT);
 		// dataset
 		H5::DataSet dataset = file_.createDataSet(name, record_type, dataspace);
 		// writing data
