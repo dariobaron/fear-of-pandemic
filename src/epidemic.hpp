@@ -13,6 +13,12 @@
 
 class Epidemic{
 
+public:
+	struct Record{
+		double t;
+		unsigned int S, E, I, R, D;
+	};
+
 protected:
 	std::vector<Node*> nodes_;
 	std::vector<unsigned int> S_;
@@ -106,6 +112,18 @@ public:
 	std::vector<unsigned int> getI() const{	return I_;	};
 	std::vector<unsigned int> getR() const{	return R_;	};
 	std::vector<unsigned int> getD() const{	return D_;	};
+	std::vector<Record> getRecords() const{
+		std::vector<Record> records(t_.size());
+		for (auto i = 0; i < t_.size(); ++i){
+			records[i].t = t_[i];
+			records[i].S = S_[i];
+			records[i].E = E_[i];
+			records[i].I = I_[i];
+			records[i].R = R_[i];
+			records[i].D = D_[i];
+		}
+		return records;
+	};
 
 	void seedEpidemic(unsigned int N_initial_infectiouses){
 // selecting N_initial_infectiouses nodes at random		

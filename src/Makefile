@@ -6,17 +6,21 @@ SOURCES := $(wildcard *.cpp)
 OBJECTS := $(patsubst %.cpp,%.o,$(SOURCES))
 # list of all the executable files
 EXECUTABLES := create_network.x simulation.x prova.x
+# list of executable names
+EXECUTABLENAMES := $(patsubst %.x,%,$(EXECUTABLES))
 
 # compiler directives
 WARNING := -Wall -Wpedantic -Wextra -Wno-sign-compare
-CXX := g++
+CXX := h5c++
 CXXFLAGS := -O3 -std=c++17
 
 
-.PHONY: all clean profile
+.PHONY: all clean $(EXECUTABLENAMES)
 
 
 all: $(EXECUTABLES)
+
+$(EXECUTABLENAMES): % : %.x
 
 %.x: %.o
 	$(CXX) $^ -o $@
