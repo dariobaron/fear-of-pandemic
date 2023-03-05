@@ -31,10 +31,10 @@ def load_data(network_name):
 	data.rename_axis(index=["reaction","fear","feedback","t"], inplace=True)
 
 	simulation_name_noFeedback = "_".join([hyper_parameters[i]+"none" for i in range(len(hyper_parameters))])
-	data_none = pd.concat([pd.read_csv(os.path.join("output", network_name, simulation_name, str(i)+".txt"),
+	data_none = pd.concat({i : pd.read_csv(os.path.join("output", network_name, simulation_name_noFeedback, str(i)+".txt"),
 	                            sep=" ", header=0, index_col="t",  dtype={"t":np.float64,"S":"Int32","E":"Int32","I":"Int32","R":"Int32","D":"Int32"})
 	                       for i in range(100)
-	                      ], axis=1, join="outer", keys=[i for i in range(100)])
+                          }, axis=1, join="outer")
 	data_none.index = pd.MultiIndex.from_product([["none"],["none"],["none"],data_none.index], names=["reaction","fear","feedback","t"])
 
 	data = pd.concat([data_none,data])

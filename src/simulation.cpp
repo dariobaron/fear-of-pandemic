@@ -101,12 +101,7 @@ else 									{	throw std::invalid_argument("Wrong FEEDBACK_TYPE passed : "+feed
 std::string output_directory = input_directory;
 auto str_loc = output_directory.find("input");
 output_directory.replace(str_loc, str_loc+5, "output");
-output_directory = output_directory + "REACTION" + reaction_type
-									+ "_FEAR" + fear_distribution
-									+ "_FEEDBACK" + feedback_type + "/";
-std::filesystem::create_directories(output_directory);
-
-Results results(output_directory + "REACTION" + reaction_type + "_FEAR" + fear_distribution + "_FEEDBACK" + feedback_type + ".h5");
+Results results(output_directory + "REACTION"+reaction_type + "_FEAR"+fear_distribution + "_FEEDBACK"+feedback_type + ".h5");
 
 unsigned run = 0;
 unsigned failed_runs = 0;
@@ -125,16 +120,6 @@ while (run < N_runs){
 
 	if (epidemic.outbreakHappened()){
 
-/*		Results results(epidemic);
-
-		std::string output_filename =  std::to_string(run) + ".txt";
-		output.open(output_directory + output_filename);
-		
-		results.writeData(output);
-		
-		output.close();
-		output.clear();
-*/
 		results.createDataset(std::to_string(run), epidemic);
 
 		++run;
@@ -147,11 +132,6 @@ while (run < N_runs){
 	std::cout << "Processing : " << run * 100 / N_runs << "%\r" << std::flush; 
 }
 
-/*output.open(output_directory + "rate_early_extinction.txt");
-output << (double)(failed_runs) / (run+failed_runs) << std::endl;
-output.close();
-output.clear();
-*/
 results.setAttribute("early_extinction_rate", (double)(failed_runs) / (run+failed_runs));
 
 std::clog << "\r----------Completed in " << timer.stop() << " sec ----------" << std::endl << std::endl;
