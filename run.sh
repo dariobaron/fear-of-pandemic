@@ -16,13 +16,13 @@ mkdir -p $outputdir
 
 outputfile="$outputdir/execution_log.txt"
 
-src/simulation.x $1 'none' 'none' 'none' 2>$outputfile
+src/simulation.x $1 'none' 'none' 'none' 2>${outputfile}_none_none_none &
 
 if [[ $# -eq 1 && -e $1 ]]; then
 	for reaction in "${REACTIONTYPE[@]}"; do
 		for fear in "${FEARDISTRIBUTION[@]}"; do
 			for feedback in "${FEEDBACKTYPE[@]}"; do
-					src/simulation.x $1 $reaction $fear $feedback 2>>$outputfile
+					src/simulation.x $1 $reaction $fear $feedback 2>${outputfile}_${reaction}_${fear}_${feedback} &
 			done
 		done
 	done
