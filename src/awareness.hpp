@@ -6,9 +6,13 @@
 #include <algorithm>
 #include <numeric>
 #include "node.hpp"
+#include "constants.hpp"
 
 
 class Awareness{
+
+public:
+	using uvec = std::vector<unsigned>;
 
 protected:
 	const bool cut_connections_;
@@ -17,7 +21,7 @@ public:
 
 	Awareness(bool cut_connections) : cut_connections_(cut_connections) {};
 
-	virtual void setGlobalMetric(const std::vector<unsigned int> & I, const std::vector<unsigned int> & D) = 0;
+	virtual void setGlobalMetric(const uvec & I, const uvec & R, const uvec & D) = 0;
 	
 	std::map<Node*,double> computeContacts(Node * node){
 		std::map<Node*,double> contacts;
@@ -49,9 +53,12 @@ public:
 class NoAwareness : public Awareness{
 
 public:
+	using uvec = std::vector<unsigned>;
+
+public:
 	NoAwareness() : Awareness(false) {};
 	
-	void setGlobalMetric(const std::vector<unsigned int> & , const std::vector<unsigned int> & ){};
+	void setGlobalMetric(const uvec &, const uvec &, const uvec &){};
 
 	double feedback(Node *){
 		return 0;
@@ -65,6 +72,9 @@ public:
 
 class ShortAwareness : public Awareness{
 
+public:
+	using uvec = std::vector<unsigned>;
+
 protected:
 	const double delta_s_;
 
@@ -75,8 +85,8 @@ public:
 	ShortAwareness(double delta_s, bool cut_connections)
 		: Awareness(cut_connections), delta_s_(delta_s) {};
 	
-	void setGlobalMetric(const std::vector<unsigned int> &, const std::vector<unsigned int> & D){
-		Ddot_ = D.back();
+	void setGlobalMetric(const uvec &, const uvec & R, const uvec & D){
+		Ddot_ = (R.back() + D.back()) * f_D;
 	};
 
 	double feedback(Node *){
@@ -91,6 +101,9 @@ public:
 
 class LongAwareness : public Awareness{
 
+public:
+	using uvec = std::vector<unsigned>;
+
 protected:
 	const double delta_l_;
 
@@ -101,8 +114,8 @@ public:
 	LongAwareness(double delta_l, bool cut_connections)
 		: Awareness(cut_connections), delta_l_(delta_l) {};
 	
-	void setGlobalMetric(const std::vector<unsigned int> &, const std::vector<unsigned int> & D){
-		Dtot_ = accumulate(D.begin(), D.end(), 0);
+	void setGlobalMetric(const uvec &, const uvec & R, const uvec & D){
+		Dtot_ = (accumulate(R.begin(), R.end(), 0) + accumulate(D.begin(), D.end(), 0)) * f_D;
 	};
 
 	double feedback(Node *){
@@ -117,6 +130,9 @@ public:
 
 class ShortLongAwareness : public Awareness{
 
+public:
+	using uvec = std::vector<unsigned>;
+
 protected:
 	const double delta_s_;
 	const double delta_l_;
@@ -129,9 +145,9 @@ public:
 	ShortLongAwareness(double delta_s, double delta_l, bool cut_connections)
 		: Awareness(cut_connections), delta_s_(delta_s), delta_l_(delta_l) {};
 	
-	void setGlobalMetric(const std::vector<unsigned int> &, const std::vector<unsigned int> & D){
-		Ddot_ = D.back();
-		Dtot_ = accumulate(D.begin(), D.end(), 0);
+	void setGlobalMetric(const uvec &, const uvec & R, const uvec & D){
+		Ddot_ = (R.back() + D.back()) * f_D;
+		Dtot_ = (accumulate(R.begin(), R.end(), 0) + accumulate(D.begin(), D.end(), 0)) * f_D;
 	};
 
 	double feedback(Node *){
@@ -148,6 +164,9 @@ public:
 
 class NeighbourAwareness : public Awareness{
 
+public:
+	using uvec = std::vector<unsigned>;
+
 protected:
 	const double delta_nI_;
 	const double delta_nD_;
@@ -156,7 +175,7 @@ public:
 	NeighbourAwareness(double delta_nI, double delta_nD, bool cut_connections)
 		: Awareness(cut_connections), delta_nI_(delta_nI), delta_nD_(delta_nD) {};
 	
-	void setGlobalMetric(const std::vector<unsigned int> &, const std::vector<unsigned int> &){};
+	void setGlobalMetric(const uvec &, const uvec &, const uvec &){};
 
 	double feedback(Node * node){
 		int neigh_infected = 0;
@@ -176,6 +195,9 @@ public:
 
 class AllAwareness : public Awareness{
 
+public:
+	using uvec = std::vector<unsigned>;
+
 protected:
 	const double delta_s_;
 	const double delta_l_;
@@ -191,9 +213,9 @@ public:
 		: Awareness(cut_connections), delta_s_(delta_s), delta_l_(delta_l),
 		delta_nI_(delta_nI), delta_nD_(delta_nD) {};
 	
-	void setGlobalMetric(const std::vector<unsigned int> &, const std::vector<unsigned int> & D){
-		Ddot_ = D.back();
-		Dtot_ = accumulate(D.begin(), D.end(), 0);
+	void setGlobalMetric(const uvec &, const uvec & R, const uvec & D){
+		Ddot_ =  (R.back() + D.back()) * f_D;
+		Dtot_ = (accumulate(R.begin(), R.end(), 0) + accumulate(D.begin(), D.end(), 0)) * f_D;
 	};
 
 	double feedback(Node * node){

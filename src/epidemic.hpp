@@ -53,7 +53,7 @@ private:
 	void evolveStep(){
 // getting new timestamp
 		t_.push_back(time_gen_());
-		awareness_.setGlobalMetric(I_, D_);
+		awareness_.setGlobalMetric(I_, R_, D_);
 // loop over the infecteds
 		for (auto node : infecteds_){
 			auto contacts = awareness_.computeContacts(node);
