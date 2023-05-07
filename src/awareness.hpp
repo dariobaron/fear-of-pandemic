@@ -86,7 +86,7 @@ public:
 		: Awareness(cut_connections), delta_s_(delta_s) {};
 	
 	void setGlobalMetric(const uvec &, const uvec & R, const uvec & D){
-		Ddot_ = (R.back() + D.back()) * f_D;
+		Ddot_ = (R.back() + D.back() - R.rbegin()[1] - D.rbegin()[1]) * f_D;
 	};
 
 	double feedback(Node *){
@@ -115,7 +115,7 @@ public:
 		: Awareness(cut_connections), delta_l_(delta_l) {};
 	
 	void setGlobalMetric(const uvec &, const uvec & R, const uvec & D){
-		Dtot_ = (accumulate(R.begin(), R.end(), 0) + accumulate(D.begin(), D.end(), 0)) * f_D;
+		Dtot_ = (R.back() + D.back()) * f_D;
 	};
 
 	double feedback(Node *){
@@ -146,8 +146,8 @@ public:
 		: Awareness(cut_connections), delta_s_(delta_s), delta_l_(delta_l) {};
 	
 	void setGlobalMetric(const uvec &, const uvec & R, const uvec & D){
-		Ddot_ = (R.back() + D.back()) * f_D;
-		Dtot_ = (accumulate(R.begin(), R.end(), 0) + accumulate(D.begin(), D.end(), 0)) * f_D;
+		Ddot_ = (R.back() + D.back() - R.rbegin()[1] - D.rbegin()[1]) * f_D;
+		Dtot_ = (R.back() + D.back()) * f_D;
 	};
 
 	double feedback(Node *){
@@ -214,8 +214,8 @@ public:
 		delta_nI_(delta_nI), delta_nD_(delta_nD) {};
 	
 	void setGlobalMetric(const uvec &, const uvec & R, const uvec & D){
-		Ddot_ =  (R.back() + D.back()) * f_D;
-		Dtot_ = (accumulate(R.begin(), R.end(), 0) + accumulate(D.begin(), D.end(), 0)) * f_D;
+		Ddot_ = (R.back() + D.back() - R.rbegin()[1] - D.rbegin()[1]) * f_D;
+		Dtot_ = (R.back() + D.back()) * f_D;
 	};
 
 	double feedback(Node * node){

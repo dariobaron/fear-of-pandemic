@@ -8,7 +8,7 @@ cd ../
 
 REACTIONTYPE=( 'soften' 'cut' )
 FEARDISTRIBUTION=( 'fixed' 'uni' 'asyLow' 'asyHigh' 'bi' 'corr' 'anticorr' )
-FEEDBACKTYPE=( 'short' 'long' 'shortlong' 'neighbours' 'all' )
+FEEDBACKTYPE=( 'short' 'long' 'shortlong' )#'neighbours' 'all' )
 
 outputdir="${1/input/"output"}"
 outputdir="${outputdir%.*}"
