@@ -35,7 +35,7 @@ public:
 	std::map<Node*,double> computeContacts(Node * node){
 		std::map<Node*,double> contacts;
 		for (auto neighbour : node->connections()){
-			contacts[neighbour] = 1. / (1 + std::max( node->fear()*feedback(node), neighbour->fear()*feedback(neighbour) ));
+			contacts[neighbour] = 1. / (1 + std::max( node->fear()*feedbacks_[node], neighbour->fear()*feedbacks_[neighbour] ));
 		}
 		if (cut_connections_){
 			// compute the number of contacts
