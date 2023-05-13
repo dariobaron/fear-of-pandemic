@@ -17,34 +17,56 @@ public:
 protected:
 	const bool cut_connections_;
 
+private:
+	std::map<Node*,double> feedbacks_;
+
 public:
 
 	Awareness(bool cut_connections) : cut_connections_(cut_connections) {};
 
 	virtual void setGlobalMetric(const uvec & I, const uvec & R, const uvec & D) = 0;
+
+	void computeFeedbacks(std::vector<Node*> & nodes){
+		for (auto node : nodes){
+			feedbacks_[node] = feedback(node);
+		}
+	};
 	
 	std::map<Node*,double> computeContacts(Node * node){
 		std::map<Node*,double> contacts;
 		for (auto neighbour : node->connections()){
-			if (cut_connections_){
-				if (uniform_distribution() < 1./(1+std::max(node->fear()*feedback(node),neighbour->fear()*feedback(neighbour)))){
-					contacts[neighbour] = 1.;
-				}
-				else{
-					contacts[neighbour] = 0.;
-				}
+			contacts[neighbour] = 1. / (1 + std::max( node->fear()*feedback(node), neighbour->fear()*feedback(neighbour) ));
+		}
+		if (cut_connections_){
+			// compute the number of contacts
+			double N_contacts = std::accumulate(
+				contacts.begin(), contacts.end(), 0.,
+				[](const double sum, const auto & element){ return sum + element.second; }
+			);
+			// order the contacts by decreasing intensity
+			std::multimap<double,Node*,std::greater<>> ordered_contacts;
+			for (auto & p : contacts){
+				ordered_contacts.insert(std::make_pair(p.second, p.first));
 			}
-			else{
-				contacts[neighbour] = 1. / (1 + std::max(node->fear()*feedback(node), neighbour->fear()*feedback(neighbour)));
+			// change the contact intensity according to the rule:
+			// fill the "floor(N_contacts)" most intense contacts with 1 intensity
+			// fill the "N_contacts-ceil(N_contacts)" less intense contacts with 0 intensity
+			// fill the "ceil(N_contacts)"-th most intense contact with the remainder intensity
+			double used = 0;
+			for (auto & p : ordered_contacts){
+				if		(used + p.first < std::floor(N_contacts))	{	contacts[p.second] = 1;					used += 1;			}
+				else if	(used + p.first < std::ceil(N_contacts))	{	contacts[p.second] = N_contacts - used;	used = N_contacts;	}
+				else												{	contacts[p.second] = 0;										}
 			}
-			
 		}
 		return contacts;
 	};
 
 	virtual double feedback(Node * node) = 0;
 
-	virtual void reset() = 0;
+	virtual void reset(){
+		feedbacks_.clear();
+	};
 
 };
 
