@@ -31,4 +31,5 @@ lock = Lock()
 
 N_cpu = cpu_count() - 1
 with Pool(N_cpu) as pool:
-	pool.map(process, simulations)
+	pool.imap(process, simulations)
+	pool.wait()
