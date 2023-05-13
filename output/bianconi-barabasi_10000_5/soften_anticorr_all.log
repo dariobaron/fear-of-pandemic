@@ -1,4 +1,3 @@
-Processing network in 'input/bianconi-barabasi_10000_5/'
-with parameters REACTION_TYPE=soften FEAR_DISTRIBUTION=anticorr FEEDBACK_TYPE=all
-----------Completed in 1859 sec ----------
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:2234da21f7bec0a078fee58dcf38f2e1c18a2c3dc1c25547a256669ea5ccdb80
+size 184
