@@ -71,18 +71,10 @@ std::string fear_distribution(argv[3]);
 Distribution * fear_distr = nullptr;
 if		(fear_distribution == "fixed")		{	fear_distr = new DeltaDistribution(random_engine, 0.5);	}
 else if (fear_distribution == "uni")		{	fear_distr = new BetaDistribution(random_engine, 5, 5);	}
-else if (fear_distribution == "asyLow")		{	fear_distr = new BiBetaDistribution(random_engine, 2, 8);	}
-else if (fear_distribution == "asyHigh")	{	fear_distr = new BiBetaDistribution(random_engine, 8, 2);	}
+else if (fear_distribution == "asyLow")		{	fear_distr = new BetaDistribution(random_engine, 5./4, 5./2, 1./4, 3./4);	}
+else if (fear_distribution == "asyHigh")	{	fear_distr = new BetaDistribution(random_engine, 5./2, 5./4, 0., 3./4);	}
 else if (fear_distribution == "bi")			{	fear_distr = new BiBetaDistribution(random_engine, 2, 8); }
-else if (fear_distribution == "anticorr" || fear_distribution == "corr"){
-	std::vector<int> degrees(network.size());
-	unsigned int i = 0;
-	for (auto n : network.getNodes()){
-		degrees[i] = n->degree();	++i;
-	}
-	if (fear_distribution == "anticorr"){	fear_distr = new AntiCorrDistribution(random_engine, degrees);	}
-	else if (fear_distribution == "corr"){	fear_distr = new CorrDistribution(random_engine, degrees);	}
-}
+else if (fear_distribution == "anticorr" || fear_distribution == "corr"){}
 else if (fear_distribution == "none")		{	fear_distr = new DeltaDistribution(random_engine, 1);	}
 else										{	throw std::invalid_argument("Wrong FEAR_DISTRIBUTION passed : "+fear_distribution+" is not a defined distribution for fear");	}
 
@@ -109,6 +101,17 @@ while (run < N_runs){
 
 	input_filename = std::to_string(run) + ".adjlist";
 	Network network(input_directory + input_filename);
+
+	if (fear_distribution == "anticorr" || fear_distribution == "corr"){
+		std::vector<int> logdegrees(network.size());
+		unsigned int i = 0;
+		for (auto n : network.getNodes()){
+			logdegrees[i] = std::log(n->degree());
+			++i;
+		}
+		if (fear_distribution == "anticorr")	{	fear_distr = new AntiCorrDistribution(random_engine, logdegrees);	}
+		else if (fear_distribution == "corr")	{	fear_distr = new CorrDistribution(random_engine, logdegrees);		}
+	}
 	
 	Discretizer time_generator(delta_time, start_time);
 

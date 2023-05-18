@@ -103,7 +103,6 @@ public:
 	};
 
 	~Epidemic(){
-		fear_distribution_.reset();
 		awareness_.reset();
 	};
 

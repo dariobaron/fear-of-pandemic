@@ -5,6 +5,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include "utilities.hpp"
 
 
 class Distribution{
@@ -19,7 +20,11 @@ public:
 	
 	virtual double operator()() = 0;
 
-	virtual void reset() = 0;
+	std::vector<double> generate(unsigned N){
+		std::vector<double> samples(N);
+		for (auto & s : samples){	s = (*this)();	}
+		return samples;
+	};
 
 };
 
@@ -38,8 +43,6 @@ public:
 		return distribution_(random_engine_);
 	};
 
-	void reset(){};
-
 };
 
 
@@ -57,7 +60,6 @@ public:
 		return value_;
 	};
 
-	void reset(){};
 };
 
 
@@ -67,18 +69,18 @@ class BetaDistribution : public Distribution{
 protected:
 	std::gamma_distribution<> g1_;
 	std::gamma_distribution<> g2_;
+	double loc_;					// The start of the distribution domain (traslation)
+	double scale_;					// The size of the distribution domain (enlargement)
 
 public:
-	BetaDistribution(std::mt19937_64 & random_engine, double alpha=1., double beta=1.)
-		: Distribution(random_engine), g1_(alpha, 1), g2_(beta, 1) {};
+	BetaDistribution(std::mt19937_64 & random_engine, double alpha=1, double beta=1, double loc=0, double scale=1)
+		: Distribution(random_engine), g1_(alpha, 1), g2_(beta, 1), loc_(loc), scale_(scale) {};
 	
 	double operator()(){
 		double x = g1_(random_engine_);
 		double y = g2_(random_engine_);
-		return x / (x + y);
+		return x / (x + y) * scale_ + loc_;
 	}
-
-	void reset(){};
 
 };
 
@@ -99,8 +101,6 @@ public:
 		return (u_(random_engine_)<0.5) ? b1_() : b2_();
 	};
 
-	void reset(){};
-
 };
 
 
@@ -108,37 +108,23 @@ public:
 class AntiCorrDistribution : public Distribution{
 
 protected:
-	std::vector<int> degree_;
 	std::vector<double> fear_;
-	std::normal_distribution<> perturbation_;
 	unsigned int cont_;
 
-private:
-	int max_degree_, min_degree_;
-
 public:
-	AntiCorrDistribution(std::mt19937_64 & random_engine, std::vector<int> & v) : Distribution(random_engine),
-		degree_(v), fear_(v.size()), perturbation_(), cont_(0),
-		max_degree_(*max_element(degree_.begin(), degree_.end())), min_degree_(*min_element(degree_.begin(), degree_.end())) {
-			double amplitude = max_degree_ - min_degree_;
-			for (auto i = 0; i < degree_.size(); ++i){
-				double epsilon = perturbation_(random_engine_);
-				fear_[i] = std::max(std::min((max_degree_-degree_[i])/amplitude + epsilon*0.15, 1.), 0.);
-			}
+	AntiCorrDistribution(std::mt19937_64 & random_engine, std::vector<int> & v) : Distribution(random_engine), fear_(v.size()), cont_(0) {
+		BetaDistribution beta(random_engine_, 2, 1, 0., 3./4);
+		auto fears = beta.generate(v.size());
+		std::sort(fears.begin(), fears.end());
+		auto indices = argsort(v,false);
+		for (auto i = 0; i < fear_.size(); ++i){
+			fear_[indices[i]] = fears[i];
+		}
 	};
 
 	double operator()(){
 		return fear_[cont_++];
 	}
-
-	void reset(){
-		double amplitude = max_degree_ - min_degree_;
-		for (auto i = 0; i < degree_.size(); ++i){
-			double epsilon = perturbation_(random_engine_);
-			fear_[i] = std::max(std::min((max_degree_-degree_[i])/amplitude + epsilon*0.15, 1.), 0.);
-		}
-		cont_ = 0;
-	};
 
 };
 
@@ -147,37 +133,23 @@ public:
 class CorrDistribution : public Distribution{
 
 protected:
-	std::vector<int> degree_;
 	std::vector<double> fear_;
-	std::normal_distribution<> perturbation_;
 	unsigned int cont_;
 
-private:
-	int max_degree_, min_degree_;
-
 public:
-	CorrDistribution(std::mt19937_64 & random_engine, std::vector<int> & v) : Distribution(random_engine),
-		degree_(v), fear_(v.size()), perturbation_(), cont_(0),
-		max_degree_(*max_element(degree_.begin(), degree_.end())), min_degree_(*min_element(degree_.begin(), degree_.end())) {
-			double amplitude = max_degree_ - min_degree_;
-			for (auto i = 0; i < degree_.size(); ++i){
-				double epsilon = perturbation_(random_engine_);
-				fear_[i] = std::max(std::min((degree_[i]-min_degree_)/amplitude + epsilon*0.15, 1.), 0.);
-			}
+	CorrDistribution(std::mt19937_64 & random_engine, std::vector<int> & v) : Distribution(random_engine), fear_(v.size()), cont_(0) {
+		BetaDistribution beta(random_engine_, 1, 2, 1./4, 3./4);
+		auto fears = beta.generate(v.size());
+		std::sort(fears.begin(), fears.end());
+		auto indices = argsort(v);
+		for (auto i = 0; i < fear_.size(); ++i){
+			fear_[indices[i]] = fears[i];
+		}
 	};
 
 	double operator()(){
 		return fear_[cont_++];
 	}
-
-	void reset(){
-		double amplitude = max_degree_ - min_degree_;
-		for (auto i = 0; i < degree_.size(); ++i){
-			double epsilon = perturbation_(random_engine_);
-			fear_[i] = std::max(std::min((degree_[i]-min_degree_)/amplitude + epsilon*0.15, 1.), 0.);
-		}
-		cont_ = 0;
-	};
 
 };
 
