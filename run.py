@@ -30,7 +30,7 @@ def process(sim_params):
 lock = Lock()
 
 N_cpu = cpu_count() - 1
-with Pool(N_cpu) as pool:
+with Pool(10) as pool:
 	pool.imap(process, simulations)
 	pool.close()
 	pool.join()
